@@ -21,11 +21,12 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get(
-    '/status',
-    StatusController::class
-);
-
+Route::get('/status', StatusController::class);
 Route::get('user/{email}', IsEarlyAdopterUserController::class);
-Route::get('user/id/{userId}', GetUserController::class);
-Route::get('api/global/', CryptoDataController::class);
+Route::get('/coin/status/{coin_id}',CryptoDataController::class);
+Route::get('/coin/buy',CryptoDataController::class);
+Route::get('/coin/sell',CryptoDataController::class);
+Route::get('/wallet/open',CryptoDataController::class);
+Route::get('/wallet/{wallet_id}',CryptoDataController::class);
+Route::get('/wallet/{wallet_id}/balance',CryptoDataController::class);
+

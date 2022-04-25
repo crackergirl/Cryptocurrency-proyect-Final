@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Http;
 
 class CryptoDataController extends BaseController
 {
-    public function __invoke(string $route): \Illuminate\Http\Client\Response
+    public function __invoke(string $route): JsonResponse
     {
-        $response = Http::get('https://api.coinlore.net/'.$route, []);
+        //$response = Http::get('https://api.coinlore.net/'.$route, []);
 
-        return $response;
+
     }
 
 
