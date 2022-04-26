@@ -1,21 +1,36 @@
 <?php
 
-
 namespace App\Infrastructure\Controllers;
 
+use App\Application\CoinLoreAPI\CoinLoreService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Http;
 
 class CryptoDataController extends BaseController
 {
-    public function __invoke(string $route): JsonResponse
+    private CoinLoreService $coinLoreService;
+
+    public function __construct(CoinLoreService $coinLoreService)
     {
-        //$response = Http::get('https://api.coinlore.net/'.$route, []);
-
-
+        $this->coinLoreService = $coinLoreService;
     }
 
+    public function __invoke(string $coin): JsonResponse
+    {
+        try {
+            $coin = $this->coinLoreService->execute($coin);
 
+        }catch (Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        return response()->json([
+            "{id:".$coin.", email:'".$coin."'}"
+        ], Response::HTTP_OK);
+
+    }
 }

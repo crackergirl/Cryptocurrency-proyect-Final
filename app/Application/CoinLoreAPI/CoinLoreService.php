@@ -13,11 +13,8 @@ class CoinLoreService
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }
 
-    public function execute(): Coin
+    public function execute(string $coin): float
     {
-        return $this->coinLoreCryptoDataSource->makeRequest();
+        return $this->coinLoreCryptoDataSource->getCoin($coin);
     }
-
-
-
 }

@@ -1,12 +1,10 @@
 <?php
 
-
-namespace App\Application\CryptoDataSource;
+namespace App\Application\CoinLoreCryptoDataSource;
 
 use App\Domain\Coin;
 
 Interface CoinLoreCryptoDataSource
 {
-    public function makeRequest(): Coin;
-
+    public function getCoin(string $coin): float;
 }

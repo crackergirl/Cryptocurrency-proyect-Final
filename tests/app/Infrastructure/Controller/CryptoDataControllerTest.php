@@ -10,5 +10,4 @@ class CryptoDataControllerTest extends TestCase
 {
 
 
-
 }

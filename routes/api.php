@@ -1,8 +1,5 @@
 <?php
 
-use App\Infrastructure\Controllers\GetUserController;
-use App\Infrastructure\Controllers\IsEarlyAdopterUserController;
-use App\Infrastructure\Controllers\StatusController;
 use App\Infrastructure\Controllers\CryptoDataController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +18,6 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/status', StatusController::class);
-Route::get('user/{email}', IsEarlyAdopterUserController::class);
 Route::get('/coin/status/{coin_id}',CryptoDataController::class);
 Route::get('/coin/buy',CryptoDataController::class);
 Route::get('/coin/sell',CryptoDataController::class);
