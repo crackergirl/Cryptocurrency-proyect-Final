@@ -7,7 +7,7 @@ use App\Domain\Coin;
 
 class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
 {
-    public function getCoin(string $coin): float
+     public function getCoin(string $coin): Coin
     {
         $curl = curl_init();
 
@@ -22,7 +22,11 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
 
         $coin = json_decode(curl_exec($curl));
         curl_close($curl);
+        $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd);
 
-        return $coin[0]->price_usd;
+        return $coin_object;
+
     }
+
+
 }

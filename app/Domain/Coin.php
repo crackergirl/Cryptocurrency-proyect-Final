@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Domain;
+use JsonSerializable;
 
-class Coin
+class Coin implements JsonSerializable
 {
     private string $coin_id;
     private string  $name;
@@ -45,5 +46,8 @@ class Coin
     }
 
 
-
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

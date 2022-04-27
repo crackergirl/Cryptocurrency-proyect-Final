@@ -4,6 +4,7 @@ namespace App\Application\CoinLoreAPI;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 
+
 class CoinLoreService
 {
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
@@ -13,7 +14,7 @@ class CoinLoreService
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }
 
-    public function execute(string $coin): float
+    public function execute(string $coin): Coin
     {
         return $this->coinLoreCryptoDataSource->getCoin($coin);
     }
