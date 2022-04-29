@@ -2,18 +2,17 @@
 
 namespace App\Infrastructure\Controllers;
 
-use App\Application\CoinLoreAPI\CoinLoreService;
+use App\Application\CoinLoreAPI\CoinLoreGetCoinService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use App\Domain\Coin;
 
-class CryptoDataController extends BaseController
+class CoinLoreGetCoinController extends BaseController
 {
-    private CoinLoreService $coinLoreService;
+    private CoinLoreGetCoinService $coinLoreService;
 
-    public function __construct(CoinLoreService $coinLoreService)
+    public function __construct(CoinLoreGetCoinService $coinLoreService)
     {
         $this->coinLoreService = $coinLoreService;
     }

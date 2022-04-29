@@ -1,6 +1,6 @@
 <?php
 
-use App\Infrastructure\Controllers\CryptoDataController;
+use App\Infrastructure\Controllers\CoinLoreGetCoinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/coin/status/{coin_id}',CryptoDataController::class);
-Route::get('/coin/buy',CryptoDataController::class);
-Route::get('/coin/sell',CryptoDataController::class);
-Route::get('/wallet/open',CryptoDataController::class);
-Route::get('/wallet/{wallet_id}',CryptoDataController::class);
-Route::get('/wallet/{wallet_id}/balance',CryptoDataController::class);
+Route::get('/coin/status/{coin_id}',CoinLoreGetCoinController::class);
+Route::get('/coin/buy',CoinLoreGetCoinController::class);
+Route::get('/coin/sell',CoinLoreGetCoinController::class);
+Route::get('/wallet/open',CoinLoreGetCoinController::class);
+Route::get('/wallet/{wallet_id}',CoinLoreGetCoinController::class);
+Route::get('/wallet/{wallet_id}/balance',CoinLoreGetCoinController::class);
 

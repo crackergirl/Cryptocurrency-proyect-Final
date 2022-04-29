@@ -10,7 +10,7 @@ use Exception;
 use App\Domain\Coin;
 use Mockery;
 
-class CryptoDataControllerTest extends TestCase
+class CoinLoreGetCoinControllerTest extends TestCase
 {
 
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
@@ -65,7 +65,7 @@ class CryptoDataControllerTest extends TestCase
      */
     public function coinWithGivenIdExists()
     {
-        $coin = new Coin('1','1','1',1,1);
+        $coin = new Coin('1','1','1','1','1',1);
 
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')
@@ -75,6 +75,6 @@ class CryptoDataControllerTest extends TestCase
 
         $response = $this->get('/api/coin/status/90');
 
-        $response->assertStatus(Response::HTTP_OK)->assertExactJson(['{"coin_id":"1","name":"1","symbol":"1","amount":1,"value_usd":1}']);
+        $response->assertStatus(Response::HTTP_OK)->assertExactJson(['{"coin_id":"1","name":"1","symbol":"1","name_id":"1","rank":1,"price_usd":"1"}']);
     }
 }

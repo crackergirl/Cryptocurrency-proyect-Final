@@ -4,30 +4,29 @@ namespace Tests\Application\CoinLoreServiceTest;
 
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
 use Mockery;
-use App\Application\CoinLoreAPI\CoinLoreService;
+use App\Application\CoinLoreAPI\CoinLoreGetCoinService;
 
 
 
 
-class CoinLoreServiceTest extends TestCase
+class CoinLoreServiceGetCoinTest extends TestCase
 {
-    private CoinLoreService $coinLoreService;
+    private CoinLoreGetCoinService $coinLoreService;
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 
-        /**
-        * @setUp
-        */
+    /**
+    * @setUp
+    */
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
 
-        $this->coinLoreService = new CoinLoreService($this->coinLoreCryptoDataSource);
+        $this->coinLoreService = new CoinLoreGetCoinService($this->coinLoreCryptoDataSource);
     }
 
     /**
@@ -51,7 +50,7 @@ class CoinLoreServiceTest extends TestCase
      */
     public function coinFound()
     {
-        $coin = new Coin('1','1','1',1,1);
+        $coin = new Coin('1','1','1','1','1',1);
 
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')

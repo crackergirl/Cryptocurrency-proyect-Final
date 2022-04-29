@@ -5,7 +5,7 @@ use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 
 
-class CoinLoreService
+class CoinLoreGetCoinService
 {
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 

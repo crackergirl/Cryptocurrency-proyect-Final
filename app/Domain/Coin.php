@@ -9,16 +9,18 @@ class Coin
     private string $coin_id;
     private string  $name;
     private string  $symbol;
-    private float $amount;
-    private float $value_usd;
+    private string $name_id;
+    private string $price_usd;
+    private float $rank;
 
-    public function __construct(string $coin_id, string $name, string $symbol, float $amount, float $value_usd)
+    public function __construct(string $coin_id, string $name, string $symbol, string $name_id, string $price_usd,float $rank)
     {
         $this->coin_id = $coin_id;
         $this->name = $name;
         $this->symbol = $symbol;
-        $this->amount = $amount;
-        $this->value_usd = $value_usd;
+        $this->name_id = $name_id;
+        $this->price_usd = $price_usd;
+        $this->rank = $rank;
     }
 
     public function getCoinId(): string
@@ -36,14 +38,19 @@ class Coin
         return $this->symbol;
     }
 
-    public function getAmount(): float
+    public function getNameId(): string
     {
-        return $this->amount;
+        return $this->name_id;
     }
 
-    public function getValueUsd(): float
+    public function getPriceUsd(): string
     {
-        return $this->value_usd;
+        return $this->price_usd;
+    }
+
+    public function getRank(): float
+    {
+        return $this->rank;
     }
 
     public function toJson(): string|false
@@ -52,8 +59,9 @@ class Coin
             'coin_id' => $this->getCoinId(),
             'name' => $this->getName(),
             'symbol' => $this->getSymbol(),
-            'amount' => $this->getAmount(),
-            'value_usd' => $this->getValueUsd()
+            'name_id' => $this->getNameId(),
+            'rank' => $this->getRank(),
+            'price_usd' => $this->getPriceUsd()
         ]);
     }
 }
