@@ -26,10 +26,9 @@ class CryptoDataController extends BaseController
         }catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()
-            ], Response::HTTP_BAD_REQUEST);
+            ], $exception->getCode());
         }
-
-        return response()->json([ json_encode($coin)
+        return response()->json([$coin->toJson()
         ], Response::HTTP_OK);
     }
 }

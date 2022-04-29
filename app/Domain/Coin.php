@@ -2,8 +2,9 @@
 
 namespace App\Domain;
 use JsonSerializable;
+use PHPUnit\Util\Json;
 
-class Coin implements JsonSerializable
+class Coin
 {
     private string $coin_id;
     private string  $name;
@@ -45,9 +46,14 @@ class Coin implements JsonSerializable
         return $this->value_usd;
     }
 
-
-    function jsonSerialize()
+    public function toJson(): string|false
     {
-        return get_object_vars($this);
+        return json_encode([
+            'coin_id' => $this->getCoinId(),
+            'name' => $this->getName(),
+            'symbol' => $this->getSymbol(),
+            'amount' => $this->getAmount(),
+            'value_usd' => $this->getValueUsd()
+        ]);
     }
 }
