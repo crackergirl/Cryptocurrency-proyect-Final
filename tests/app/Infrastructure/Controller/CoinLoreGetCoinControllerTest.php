@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\app\Infrastructure\Controller;
-
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
