@@ -38,7 +38,7 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://onlinecode", //cambiar URL!!
+            CURLOPT_URL => "https://api.coinlore.net/api/ticker/?id=90",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_VERBOSE => true,

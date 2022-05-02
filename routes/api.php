@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/coin/status/{coin_id}',CoinLoreGetCoinController::class);
-Route::get('/coin/buy',CoinLoreBuyCoinController::class);
-Route::get('/coin/sell',CoinLoreGetCoinController::class);
-Route::get('/wallet/open',CoinLoreGetCoinController::class);
+Route::post('/coin/buy',CoinLoreBuyCoinController::class);
+Route::post('/coin/sell',CoinLoreGetCoinController::class);
+Route::post('/wallet/open',CoinLoreGetCoinController::class);
 Route::get('/wallet/{wallet_id}',CoinLoreGetCoinController::class);
 Route::get('/wallet/{wallet_id}/balance',CoinLoreGetCoinController::class);
 

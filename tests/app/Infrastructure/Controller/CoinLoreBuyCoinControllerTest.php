@@ -24,4 +24,23 @@ class CoinLoreBuyCoinControllerTest extends TestCase
 
         $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $this->coinLoreCryptoDataSource);
     }
+
+    /**
+     * @test
+     */
+    public function genericError()
+    {
+        $data = ['90', '1', 0];
+
+        $headers = ['coin_id', 'wallet_id', 'amount_usd'];
+
+        $this->coinLoreCryptoDataSource
+            ->expects('buyCoin')
+            ->once()
+            ->andThrow(new Exception('Service unavailable',503));
+
+        $response = $this->post('api/coin/buy', $data, $headers);
+
+        $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
+    }
 }
