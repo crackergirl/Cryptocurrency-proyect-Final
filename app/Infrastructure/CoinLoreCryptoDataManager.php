@@ -26,19 +26,19 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
         return $coin_object;
     }
 
-    public function buyCoin(): int
+    public function buyCoin($coid_id,$wallet_id,$amount_usd): int
     {
         //POST fields
         $post_fields = [
-            'coin_id' => '90',
-            'wallet_id' => '1',
-            'amount_usd' => 0,
+            'coin_id' => $coid_id,
+            'wallet_id' => $wallet_id,
+            'amount_usd' => $amount_usd,
         ];
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.coinlore.net/api/ticker/?id=90",
+            CURLOPT_URL => "https://api.coinlore.net/api/ticker/?id=".$coid_id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_VERBOSE => true,
@@ -60,7 +60,7 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
             print_r(json_decode($final_results));
         }
 
-        return int($final_results);
+        return intval($final_results);
     }
 
 }

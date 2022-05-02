@@ -12,8 +12,8 @@ class CoinLoreBuyCoinService
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }
 
-    public function execute(): int
+    public function execute(string $coid_id, string $wallet_id,float $amount_usd): int
     {
-        return $this->coinLoreCryptoDataSource->buyCoin();
+        return $this->coinLoreCryptoDataSource->buyCoin($coid_id,$wallet_id,$amount_usd);
     }
 }

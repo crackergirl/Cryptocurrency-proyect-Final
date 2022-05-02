@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
-use Tests\app\Infrastructure\Controller\CoinLoreBuyCoinControllerTest;
 use App\Application\CoinLoreAPI\CoinLoreBuyCoinService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-
+use Illuminate\Http\Request;
 
 class CoinLoreBuyCoinController extends BaseController
 {
@@ -18,15 +17,19 @@ class CoinLoreBuyCoinController extends BaseController
         $this->coinLoreBuyCoinService = $coinLoreBuyCoinService;
     }
 
-    public function __invoke(): JsonResponse
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function __invoke(Request $request): JsonResponse
     {
         try {
-            if (isset($_POST["coin_id"])){
-                return response()->json([121212
-                ], Response::HTTP_OK);
+            if($request->exists('coin_id') and  $request->exists('wallet_id')
+                and $request->exists('amount_usd')){
+                $requestStatus = $this->coinLoreBuyCoinService->execute($request->input('coin_id'),
+                    $request->input('wallet_id')
+                    ,$request->input('amount_usd') );
             }
-            $requestStatus = $this->coinLoreBuyCoinService->execute();
-
 
         }catch (Exception $exception) {
             return response()->json([

@@ -6,7 +6,6 @@ use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
-use App\Domain\Coin;
 use Mockery;
 
 class CoinLoreBuyCoinControllerTest extends TestCase
@@ -30,17 +29,55 @@ class CoinLoreBuyCoinControllerTest extends TestCase
      */
     public function genericError()
     {
-        $data = ['90', '1', 0];
-
-        $headers = ['coin_id', 'wallet_id', 'amount_usd'];
+        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
 
         $this->coinLoreCryptoDataSource
             ->expects('buyCoin')
+            ->with('90','1',0)
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
-        $response = $this->post('api/coin/buy', $data, $headers);
+        $response = $this->post('api/coin/buy', $data);
 
         $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
     }
+
+    /**
+     * @test
+     */
+    public function buyCoinSuccessful()
+    {
+        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
+
+        $this->coinLoreCryptoDataSource
+            ->expects('buyCoin')
+            ->with('90','1',0)
+            ->once()
+            ->andReturn(200);
+
+        $response = $this->post('api/coin/buy', $data);
+
+        $response->assertStatus(Response::HTTP_OK)->assertExactJson([200]);
+    }
+
+    /**
+     * @test
+     */
+    public function coinNotFound()
+    {
+        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
+
+        $this->coinLoreCryptoDataSource
+            ->expects('buyCoin')
+            ->with('90','1',0)
+            ->once()
+            ->andReturn(404);
+
+        $response = $this->post('api/coin/buy', $data);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson([404]);
+    }
+
+
+
 }
