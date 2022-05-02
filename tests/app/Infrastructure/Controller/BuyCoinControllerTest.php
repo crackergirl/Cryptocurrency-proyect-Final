@@ -32,8 +32,8 @@ class BuyCoinControllerTest extends TestCase
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
 
         $this->coinLoreCryptoDataSource
-            ->expects('buyCoin')
-            ->with('90','1',0)
+            ->expects('getCoin')
+            ->with('90')
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
@@ -47,17 +47,12 @@ class BuyCoinControllerTest extends TestCase
      */
     public function buyCoinSuccessful()
     {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
+        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>10];
 
-        $this->coinLoreCryptoDataSource
-            ->expects('buyCoin')
-            ->with('90','1',0)
-            ->once()
-            ->andReturn(200);
+        $response = $this->postJson('api/coin/buy', $data);
 
-        $response = $this->post('api/coin/buy', $data);
-
-        $response->assertStatus(Response::HTTP_OK)->assertExactJson([200]);
+        var_dump($response->getContent());
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     /**
@@ -71,11 +66,12 @@ class BuyCoinControllerTest extends TestCase
             ->expects('buyCoin')
             ->with('90','1',0)
             ->once()
-            ->andReturn(404);
+            ->andThrow(new Exception(
+                'A coin with the specified ID was not found',404));
 
         $response = $this->post('api/coin/buy', $data);
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson([404]);
+        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with the specified ID was not found']);
     }
 
 

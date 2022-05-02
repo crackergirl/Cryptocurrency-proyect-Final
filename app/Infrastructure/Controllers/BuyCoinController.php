@@ -23,13 +23,23 @@ class BuyCoinController extends BaseController
      */
     public function __invoke(Request $request): JsonResponse
     {
+        if(!$request->exists('coin_id')){
+            return response()->json(['coin_id mandatory'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        if(!$request->exists('wallet_id')){
+            return response()->json(['wallet_id mandatory'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        if(!$request->exists('amount_usd')){
+            return response()->json(['amount_usd mandatory'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         try {
-            if($request->exists('coin_id') and  $request->exists('wallet_id')
-                and $request->exists('amount_usd')){
-                $requestStatus = $this->buyCoinService->execute($request->input('coin_id'),
-                    $request->input('wallet_id')
-                    ,$request->input('amount_usd') );
-            }
+            $requestStatus = $this->buyCoinService->execute($request->input('coin_id'),
+                $request->input('wallet_id')
+                ,$request->input('amount_usd'));
 
         }catch (Exception $exception) {
             return response()->json([
