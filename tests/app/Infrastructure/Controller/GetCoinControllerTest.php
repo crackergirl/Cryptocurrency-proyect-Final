@@ -1,17 +1,17 @@
 <?php
 
-
 namespace Tests\app\Infrastructure\Controller;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
+use App\Domain\Coin;
 use Mockery;
 
-class CoinLoreBuyCoinControllerTest extends TestCase
+class GetCoinControllerTest extends TestCase
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 
+    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
     /**
      * @setUp
      */
@@ -29,15 +29,14 @@ class CoinLoreBuyCoinControllerTest extends TestCase
      */
     public function genericError()
     {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
 
         $this->coinLoreCryptoDataSource
-            ->expects('buyCoin')
-            ->with('90','1',0)
+            ->expects('getCoin')
+            ->with(90)
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->get('/api/coin/status/90');
 
         $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
     }
@@ -45,39 +44,35 @@ class CoinLoreBuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function buyCoinSuccessful()
+    public function coinWithGivenIdNotExists()
     {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
 
         $this->coinLoreCryptoDataSource
-            ->expects('buyCoin')
-            ->with('90','1',0)
+            ->expects('getCoin')
+            ->with(90)
             ->once()
-            ->andReturn(200);
+            ->andThrow(new Exception('A coin with the specified ID was not found',404));
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->get('/api/coin/status/90');
 
-        $response->assertStatus(Response::HTTP_OK)->assertExactJson([200]);
+        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with the specified ID was not found']);
     }
 
     /**
      * @test
      */
-    public function coinNotFound()
+    public function coinWithGivenIdExists()
     {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=>0];
+        $coin = new Coin('1','1','1','1','1',1);
 
         $this->coinLoreCryptoDataSource
-            ->expects('buyCoin')
-            ->with('90','1',0)
+            ->expects('getCoin')
+            ->with(90)
             ->once()
-            ->andReturn(404);
+            ->andReturn($coin);
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->get('/api/coin/status/90');
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson([404]);
+        $response->assertStatus(Response::HTTP_OK)->assertExactJson(['{"coin_id":"1","name":"1","symbol":"1","name_id":"1","rank":1,"price_usd":"1"}']);
     }
-
-
-
 }

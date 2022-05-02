@@ -1,7 +1,7 @@
 <?php
 
-use App\Infrastructure\Controllers\CoinLoreGetCoinController;
-use App\Infrastructure\Controllers\CoinLoreBuyCoinController;
+use App\Infrastructure\Controllers\GetCoinController;
+use App\Infrastructure\Controllers\BuyCoinController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +20,10 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/coin/status/{coin_id}',CoinLoreGetCoinController::class);
-Route::post('/coin/buy',CoinLoreBuyCoinController::class);
-Route::post('/coin/sell',CoinLoreGetCoinController::class);
-Route::post('/wallet/open',CoinLoreGetCoinController::class);
-Route::get('/wallet/{wallet_id}',CoinLoreGetCoinController::class);
-Route::get('/wallet/{wallet_id}/balance',CoinLoreGetCoinController::class);
+Route::get('/coin/status/{coin_id}',GetCoinController::class);
+Route::post('/coin/buy',BuyCoinController::class);
+Route::post('/coin/sell',GetCoinController::class);
+Route::post('/wallet/open',GetCoinController::class);
+Route::get('/wallet/{wallet_id}',GetCoinController::class);
+Route::get('/wallet/{wallet_id}/balance',GetCoinController::class);
 

@@ -6,11 +6,11 @@ use App\Domain\Coin;
 use Tests\TestCase;
 use Exception;
 use Mockery;
-use App\Application\CoinLoreAPI\CoinLoreGetCoinService;
+use App\Application\API\GetCoinService;
 
-class CoinLoreServiceGetCoinTest extends TestCase
+class ServiceGetCoinTest extends TestCase
 {
-    private CoinLoreGetCoinService $coinLoreService;
+    private GetCoinService $getCoinService;
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 
     /**
@@ -22,7 +22,7 @@ class CoinLoreServiceGetCoinTest extends TestCase
 
         $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
 
-        $this->coinLoreService = new CoinLoreGetCoinService($this->coinLoreCryptoDataSource);
+        $this->getCoinService = new GetCoinService($this->coinLoreCryptoDataSource);
     }
 
     /**
@@ -38,7 +38,7 @@ class CoinLoreServiceGetCoinTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $this->coinLoreService->execute(-1);
+        $this->getCoinService->execute(-1);
     }
 
     /**
@@ -54,7 +54,7 @@ class CoinLoreServiceGetCoinTest extends TestCase
             ->once()
             ->andReturn($coin);
 
-        $response = $this->coinLoreService->execute(300);
+        $response = $this->getCoinService->execute(300);
 
         $this->assertEquals($coin,$response);
     }

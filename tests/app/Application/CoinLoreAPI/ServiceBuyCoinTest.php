@@ -7,12 +7,12 @@ use App\Domain\Coin;
 use Tests\TestCase;
 use Exception;
 use Mockery;
-use App\Application\CoinLoreAPI\CoinLoreBuyCoinService;
+use App\Application\API\BuyCoinService;
 
 
-class CoinLoreServiceBuyCoinTest extends TestCase
+class ServiceBuyCoinTest extends TestCase
 {
-    private CoinLoreBuyCoinService $coinLoreBuyCoinService;
+    private BuyCoinService $buyCoinService;
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 
     /**
@@ -24,7 +24,7 @@ class CoinLoreServiceBuyCoinTest extends TestCase
 
         $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
 
-        $this->coinLoreBuyCoinService = new CoinLoreBuyCoinService($this->coinLoreCryptoDataSource);
+        $this->buyCoinService = new BuyCoinService($this->coinLoreCryptoDataSource);
     }
 
 

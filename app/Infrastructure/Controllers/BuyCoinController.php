@@ -1,20 +1,20 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
-use App\Application\CoinLoreAPI\CoinLoreBuyCoinService;
+use App\Application\API\BuyCoinService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
-class CoinLoreBuyCoinController extends BaseController
+class BuyCoinController extends BaseController
 {
-    private CoinLoreBuyCoinService $coinLoreBuyCoinService;
+    private BuyCoinService $buyCoinService;
 
-    public function __construct(CoinLoreBuyCoinService $coinLoreBuyCoinService)
+    public function __construct(BuyCoinService $buyCoinService)
     {
-        $this->coinLoreBuyCoinService = $coinLoreBuyCoinService;
+        $this->buyCoinService = $buyCoinService;
     }
 
     /**
@@ -26,7 +26,7 @@ class CoinLoreBuyCoinController extends BaseController
         try {
             if($request->exists('coin_id') and  $request->exists('wallet_id')
                 and $request->exists('amount_usd')){
-                $requestStatus = $this->coinLoreBuyCoinService->execute($request->input('coin_id'),
+                $requestStatus = $this->buyCoinService->execute($request->input('coin_id'),
                     $request->input('wallet_id')
                     ,$request->input('amount_usd') );
             }

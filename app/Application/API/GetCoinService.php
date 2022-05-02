@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Application\CoinLoreAPI;
+namespace App\Application\API;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Domain\Coin;
 
-class CoinLoreBuyCoinService
+class GetCoinService
 {
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 
@@ -12,8 +13,8 @@ class CoinLoreBuyCoinService
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }
 
-    public function execute(string $coid_id, string $wallet_id,float $amount_usd): int
+    public function execute(string $coin): Coin
     {
-        return $this->coinLoreCryptoDataSource->buyCoin($coid_id,$wallet_id,$amount_usd);
+        return $this->coinLoreCryptoDataSource->getCoin($coin);
     }
 }
