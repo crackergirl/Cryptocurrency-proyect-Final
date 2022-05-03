@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use Illuminate\Http\Response;
 use phpDocumentor\Reflection\Types\Null_;
 
 class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
@@ -28,7 +29,7 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
         $coin = json_decode(curl_exec($curl));
         curl_close($curl);
         if(empty($coin)){
-            throw new \Exception('A coin with specified ID was not found.',404);
+            throw new \Exception('A coin with specified ID was not found.',Response::HTTP_NOT_FOUND);
         }
         $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd,$coin[0]->rank);
 
