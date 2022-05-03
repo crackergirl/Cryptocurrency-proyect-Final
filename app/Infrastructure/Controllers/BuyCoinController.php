@@ -7,14 +7,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use App\Infrastructure\Validation\ParametersValidation;
 
 class BuyCoinController extends BaseController
 {
     private BuyCoinService $buyCoinService;
+    private ParametersValidation $parametersValidation;
 
     public function __construct(BuyCoinService $buyCoinService)
     {
         $this->buyCoinService = $buyCoinService;
+        $this->parametersValidation = new ParametersValidation();
     }
 
     /**
@@ -23,20 +26,8 @@ class BuyCoinController extends BaseController
      */
     public function __invoke(Request $request): JsonResponse
     {
-        if(!$request->exists('coin_id')){
-            return response()->json(['coin_id mandatory'
-            ], Response::HTTP_BAD_REQUEST);
-        }
-        if(!$request->exists('wallet_id')){
-            return response()->json(['wallet_id mandatory'
-            ], Response::HTTP_BAD_REQUEST);
-        }
-        if(!$request->exists('amount_usd')){
-            return response()->json(['amount_usd mandatory'
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
         try {
+            $this->parametersValidation->execute($request);
             $requestStatus = $this->buyCoinService->execute($request->input('coin_id'));
 
         }catch (Exception $exception) {

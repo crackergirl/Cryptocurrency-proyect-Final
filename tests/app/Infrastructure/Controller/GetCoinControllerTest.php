@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
+
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -10,27 +11,16 @@ use Mockery;
 
 class GetCoinControllerTest extends TestCase
 {
-
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
-    /**
-     * @setUp
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
-
-        $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $this->coinLoreCryptoDataSource);
-    }
-
     /**
      * @test
      */
     public function genericError()
     {
+        $coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
 
-        $this->coinLoreCryptoDataSource
+        $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $coinLoreCryptoDataSource);
+
+        $coinLoreCryptoDataSource
             ->expects('getCoin')
             ->with(90)
             ->once()
@@ -47,15 +37,9 @@ class GetCoinControllerTest extends TestCase
     public function coinWithGivenIdNotExists()
     {
 
-        $this->coinLoreCryptoDataSource
-            ->expects('getCoin')
-            ->with(90)
-            ->once()
-            ->andThrow(new Exception('A coin with the specified ID was not found',404));
+        $response = $this->getJson('/api/coin/status/12345');
 
-        $response = $this->get('/api/coin/status/90');
-
-        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with the specified ID was not found']);
+        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with specified ID was not found.']);
     }
 
     /**
@@ -63,9 +47,13 @@ class GetCoinControllerTest extends TestCase
      */
     public function coinWithGivenIdExists()
     {
+        $coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
+
+        $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $coinLoreCryptoDataSource);
+
         $coin = new Coin('1','1','1','1','1',1);
 
-        $this->coinLoreCryptoDataSource
+        $coinLoreCryptoDataSource
             ->expects('getCoin')
             ->with(90)
             ->once()

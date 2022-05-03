@@ -23,7 +23,7 @@ class BuyCoinService
         try {
             $this->coinLoreCryptoDataSource->getCoin($coin_id);
         }catch (Exception $exception){
-             throw new \Exception($exception->getMessage(),$exception->getCode());;
+             throw new \Exception($exception->getMessage(),$exception->getCode());
         }
 
         return "Successful Operation";
