@@ -37,9 +37,7 @@ class BuyCoinController extends BaseController
         }
 
         try {
-            $requestStatus = $this->buyCoinService->execute($request->input('coin_id'),
-                $request->input('wallet_id')
-                ,$request->input('amount_usd'));
+            $requestStatus = $this->buyCoinService->execute($request->input('coin_id'));
 
         }catch (Exception $exception) {
             return response()->json([

@@ -4,7 +4,6 @@
 namespace Tests\Application\CoinLoreServiceTest;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
 use Mockery;
@@ -35,14 +34,33 @@ class ServiceBuyCoinTest extends TestCase
     {
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')
-            ->with('12345')
+            ->with(12345)
             ->once()
-            ->andThrow('A coin with specified ID was not found.');
+            ->andThrow(new Exception('A coin with specified ID was not found.',404));
 
         $this->expectException(Exception::class);
 
-        $this->buyCoinService->execute('12345','1',0);
+        $this->buyCoinService->execute(12345);
     }
+
+    /**
+     * @test
+     */
+    public function coinFound()
+    {
+        $coin = new Coin('1','1','1','1','1',1);
+
+        $this->coinLoreCryptoDataSource
+            ->expects('getCoin')
+            ->with(300)
+            ->once()
+            ->andReturn($coin);
+
+        $response = $this->buyCoinService->execute(300);
+
+        $this->assertEquals("Successful Operation",$response);
+    }
+
 
 
 
