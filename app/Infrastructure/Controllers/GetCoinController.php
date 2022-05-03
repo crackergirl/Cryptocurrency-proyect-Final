@@ -1,26 +1,25 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
-
-use App\Application\CoinLoreAPI\CoinLoreGetCoinService;
+use App\Application\API\GetCoinService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class CoinLoreGetCoinController extends BaseController
+class GetCoinController extends BaseController
 {
-    private CoinLoreGetCoinService $coinLoreService;
+    private GetCoinService $getCoinService;
 
-    public function __construct(CoinLoreGetCoinService $coinLoreService)
+    public function __construct(GetCoinService $getCoinService)
     {
-        $this->coinLoreService = $coinLoreService;
+        $this->getCoinService = $getCoinService;
     }
 
     public function __invoke(string $id_coin): JsonResponse
     {
         try {
-            $coin = $this->coinLoreService->execute($id_coin);
+            $coin = $this->getCoinService->execute($id_coin);
 
         }catch (Exception $exception) {
             return response()->json([

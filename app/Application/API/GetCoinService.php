@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Application\CoinLoreAPI;
+namespace App\Application\API;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 
-
-class CoinLoreGetCoinService
+class GetCoinService
 {
     private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
 

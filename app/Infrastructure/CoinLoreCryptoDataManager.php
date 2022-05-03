@@ -1,12 +1,17 @@
 <?php
 
 namespace App\Infrastructure;
-
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use phpDocumentor\Reflection\Types\Null_;
 
 class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
 {
+    /***
+     * @param string $coin
+     * @return Coin
+     * @throws \Exception
+     */
      public function getCoin(string $coin): Coin
     {
         $curl = curl_init();
@@ -22,10 +27,12 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
 
         $coin = json_decode(curl_exec($curl));
         curl_close($curl);
-        $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd);
+        if(empty($coin)){
+            throw new \Exception('A coin with specified ID was not found.',404);
+        }
+        $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd,$coin[0]->rank);
 
         return $coin_object;
-
     }
 
 
