@@ -7,5 +7,4 @@ Interface CoinLoreCryptoDataSource
 {
     public function getCoin(string $coin): Coin;
 
-    public function buyCoin(string $coid_id, string $wallet_id,float $amount_usd): int;
 }

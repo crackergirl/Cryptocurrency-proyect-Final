@@ -3,6 +3,7 @@
 namespace App\Application\API;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use Exception;
 
 class GetCoinService
 {
@@ -13,8 +14,14 @@ class GetCoinService
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }
 
-    public function execute(string $coin): Coin
+    public function execute(string $coin_id): Coin
     {
-        return $this->coinLoreCryptoDataSource->getCoin($coin);
+        try {
+            $coin = $this->coinLoreCryptoDataSource->getCoin($coin_id);
+
+        }catch (Exception $exception){
+            throw new \Exception($exception->getMessage(),$exception->getCode());
+        }
+        return $coin;
     }
 }
