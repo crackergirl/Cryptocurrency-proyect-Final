@@ -7,4 +7,6 @@ Interface CoinLoreCryptoDataSource
 {
     public function getCoin(string $coin): Coin;
 
+    public function openWallet(): string;
+
 }

@@ -3,6 +3,8 @@
 namespace App\Infrastructure;
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use App\Domain\Wallet;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Response;
 use phpDocumentor\Reflection\Types\Null_;
 
@@ -34,6 +36,20 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
         $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd,$coin[0]->rank);
 
         return $coin_object;
+    }
+
+    /***
+     * @return string
+     * @throws \Exception
+     */
+    public function openWallet():string{
+         $id_wallet = 1;
+         while(Cache::has("wallet".$id_wallet)){
+             $id_wallet+=1;
+         }
+         $wallet = new Wallet($id_wallet);
+        Cache::put('wallet'.$id_wallet,$wallet,600);
+        return strval($id_wallet);
     }
 
 
