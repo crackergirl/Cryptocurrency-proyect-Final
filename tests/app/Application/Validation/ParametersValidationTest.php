@@ -1,7 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Validation;
-
+namespace Tests\app\Application\Validation;
 use Tests\TestCase;
 use App\Infrastructure\Validation\ParametersValidation;
 use Illuminate\Http\Request;
@@ -47,5 +46,4 @@ class ParametersValidationTest extends TestCase
 
         $this->assertTrue($response);
     }
-
 }
