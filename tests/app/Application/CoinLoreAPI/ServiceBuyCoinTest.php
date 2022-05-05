@@ -33,35 +33,31 @@ class ServiceBuyCoinTest extends TestCase
     public function coinNotFound()
     {
         $this->coinLoreCryptoDataSource
-            ->expects('getCoin')
-            ->with(12345)
+            ->expects('buyCoin')
+            ->with('90','1',0)
             ->once()
             ->andThrow(new Exception('A coin with specified ID was not found.',404));
 
         $this->expectException(Exception::class);
 
-        $this->buyCoinService->execute(12345);
+        $this->buyCoinService->execute('90','1',0);
     }
 
     /**
      * @test
      */
-    public function coinFound()
+    public function coinBought()
     {
-        $coin = new Coin('1','1','1','1','1',1);
 
         $this->coinLoreCryptoDataSource
-            ->expects('getCoin')
-            ->with(300)
+            ->expects('buyCoin')
+            ->with('90','1',0)
             ->once()
-            ->andReturn($coin);
+            ->andReturn("Successful Operation");
 
-        $response = $this->buyCoinService->execute(300);
+        $response = $this->buyCoinService->execute('90','1',0);
 
         $this->assertEquals("Successful Operation",$response);
     }
-
-
-
 
 }

@@ -9,4 +9,6 @@ Interface CoinLoreCryptoDataSource
 
     public function openWallet(): string;
 
+    public function buyCoin(string $coin_id,string $wallet_id,float $amount_usd): string;
+
 }

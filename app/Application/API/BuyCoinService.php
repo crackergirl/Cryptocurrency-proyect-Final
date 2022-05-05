@@ -18,14 +18,12 @@ class BuyCoinService
      * @return string
      * @throws \Exception
      */
-    public function execute(string $coin_id): string
+    public function execute(string $coin_id,string $wallet_id,float $amount_usd): string
     {
         try {
-            $this->coinLoreCryptoDataSource->getCoin($coin_id);
+            return $this->coinLoreCryptoDataSource->buyCoin($coin_id,$wallet_id,$amount_usd);
         }catch (Exception $exception){
              throw new \Exception($exception->getMessage(),$exception->getCode());
         }
-
-        return "Successful Operation";
     }
 }
