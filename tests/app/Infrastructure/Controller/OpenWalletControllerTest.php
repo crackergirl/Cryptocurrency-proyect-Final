@@ -1,7 +1,8 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+
+use App\Infrastructure\Cache\WalletCache;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
@@ -9,7 +10,7 @@ use Mockery;
 
 class OpenWalletControllerTest extends TestCase
 {
-    private CoinLoreCryptoDataSource $CoinLoreCryptoDataSource;
+    private WalletCache $walletCache;
 
     /**
      * @setUp
@@ -18,9 +19,9 @@ class OpenWalletControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->CoinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
+        $this->walletCache = Mockery::mock(WalletCache::class);
 
-        $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $this->CoinLoreCryptoDataSource);
+        $this->app->bind(WalletCache::class, fn () => $this->walletCache);
     }
 
     /**
@@ -28,8 +29,8 @@ class OpenWalletControllerTest extends TestCase
      */
     public function genericError()
     {
-        $this->CoinLoreCryptoDataSource
-            ->expects('openWallet')
+        $this->walletCache
+            ->expects('open')
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
@@ -43,8 +44,8 @@ class OpenWalletControllerTest extends TestCase
      */
     public function openWalletSuccessful()
     {
-        $this->CoinLoreCryptoDataSource
-            ->expects('openWallet')
+        $this->walletCache
+            ->expects('open')
             ->once()
             ->andReturn("1");
 

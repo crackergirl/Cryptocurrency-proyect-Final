@@ -8,7 +8,7 @@ class Wallet
     private string $wallet_id;
     private float $profit;
     private float $expenses;
-    private $coins = array();
+    private array $coins;
 
     /**
      * Wallet constructor.
@@ -19,62 +19,60 @@ class Wallet
         $this->wallet_id = $wallet_id;
         $this->profit = 0;
         $this->expenses = 0;
+        $this->coins = array();
     }
 
-    /**
-     * @return string
-     */
     public function getWalletId(): string
     {
         return $this->wallet_id;
     }
 
-    /**
-     * @return float
-     */
     public function getExpenses(): float
     {
         return $this->expenses;
     }
 
-    /**
-     * @param float $expenses
-     */
     public function setExpenses(float $expenses): void
     {
         $this->expenses = $expenses;
     }
 
-    /**
-     * @return float
-     */
     public function getProfit(): float
     {
         return $this->profit;
     }
 
-    /**
-     * @param float
-     */
     public function setProfit(float $profit): void
     {
         $this->profit = $profit;
     }
 
-    /**
-     * @return array
-     */
     public function getCoins(): array
     {
         return $this->coins;
     }
 
-    /**
-     * @param Coin
-     */
     public function setCoins(Coin $coin,float $amount_usd): void
     {
         $this->coins[$coin->getCoinId()] = array($coin,$amount_usd);
+        if ($amount_usd <= 0)
+        {
+            unset($this->coins[$coin->getCoinId()] );
+        }
+    }
+
+    public function getCoinByID(string $coin_id): Coin
+    {
+        return $this->coins[$coin_id][0];
+    }
+    public function getAmountCoinByID(string $coin_id): float
+    {
+        return $this->coins[$coin_id][1];
+    }
+
+    public function existCoin(string $coin_id):bool
+    {
+        return array_key_exists($coin_id, $this->coins);
     }
 
 }
