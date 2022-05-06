@@ -72,9 +72,9 @@ class Wallet
     /**
      * @param Coin
      */
-    public function setCoins(Coin $coin): void
+    public function setCoins(Coin $coin,float $amount_usd): void
     {
-        $this->coins[] =$coin;
+        $this->coins[$coin->getCoinId()] = array($coin,$amount_usd);
     }
 
 }
