@@ -3,14 +3,14 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
-use App\Infrastructure\Cache\WalletCache;
 use App\Domain\Coin;
+use App\Infrastructure\Cache\WalletCache;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
 use Mockery;
 
-class BuyCoinControllerTest extends TestCase
+class SellCoinControllerTest extends TestCase
 {
     private CoinLoreCryptoDataSource $CoinLoreCryptoDataSource;
 
@@ -25,6 +25,7 @@ class BuyCoinControllerTest extends TestCase
 
         $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $this->CoinLoreCryptoDataSource);
     }
+
     /**
      * @test
      */
@@ -39,7 +40,7 @@ class BuyCoinControllerTest extends TestCase
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->post('api/coin/sell', $data);
 
         $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
     }
@@ -47,13 +48,16 @@ class BuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function buyCoinSuccessful()
+    public function sellCoinSuccessful()
     {
-        $wallet = new WalletCache();
-        $wallet->open();
+        $walletCache = new WalletCache();
+        $walletCache->open();
+        $wallet = $walletCache->get('1');
+        $coin = new Coin('90','1','1','1','1',1);
+        $wallet->setCoins($coin,'2');
+        $walletCache->set('1',$wallet);
 
-        $data = ['coin_id' => '90','wallet_id'=> '1', 'amount_usd'=> 0];
-        $coin = new Coin('1','1','1','1','1',1);
+        $data = ['coin_id' => '90','wallet_id'=> '1', 'amount_usd'=> 2];
 
         $this->CoinLoreCryptoDataSource
             ->expects('getCoin')
@@ -61,7 +65,7 @@ class BuyCoinControllerTest extends TestCase
             ->once()
             ->andReturn($coin);
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->post('api/coin/sell', $data);
 
         $response->assertStatus(Response::HTTP_OK)->assertExactJson(['successful operation']);
     }
@@ -69,18 +73,27 @@ class BuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function coinNotExists()
+    public function NumberOfCoinsExceeded()
     {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 0];
+        $walletCache = new WalletCache();
+        $walletCache->open();
+        $wallet = $walletCache->get('1');
+        $coin = new Coin('90','1','1','1','1',1);
+        $wallet->setCoins($coin,'2');
+        $walletCache->set('1',$wallet);
+
+        $data = ['coin_id' => '90','wallet_id'=> '1', 'amount_usd'=> 4];
 
         $this->CoinLoreCryptoDataSource
             ->expects('getCoin')
             ->with(90)
             ->once()
-            ->andThrow(new Exception('A coin with specified ID was not found.',404));
+            ->andReturn($coin);
 
-        $response = $this->post('api/coin/buy', $data);
+        $response = $this->post('api/coin/sell', $data);
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with specified ID was not found.']);
+        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => "the quantity has been exceeded, you have 2."]);
+
     }
+
 }

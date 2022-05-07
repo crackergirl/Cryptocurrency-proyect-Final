@@ -1,28 +1,28 @@
 <?php
 
 namespace App\Application\API;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Infrastructure\Cache\WalletCache;
 use Exception;
 
 class OpenWalletService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private WalletCache $walletCache;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    public function __construct(WalletCache $walletCache)
     {
-        $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
+        $this->walletCache = $walletCache;
     }
 
     /***
-     * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute(): string
     {
         try {
-            return $this->coinLoreCryptoDataSource->openWallet();
+            return $this->walletCache->open();
+
         }catch (Exception $exception){
-            throw new \Exception($exception->getMessage(),$exception->getCode());
+            throw new Exception($exception->getMessage(),$exception->getCode());
         }
     }
 }

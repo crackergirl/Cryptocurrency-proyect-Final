@@ -2,6 +2,7 @@
 
 use App\Infrastructure\Controllers\GetCoinController;
 use App\Infrastructure\Controllers\BuyCoinController;
+use App\Infrastructure\Controllers\SellCoinController;
 use App\Infrastructure\Controllers\OpenWalletController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/coin/status/{coin_id}',GetCoinController::class);
 Route::post('/coin/buy',BuyCoinController::class);
-Route::post('/coin/sell',GetCoinController::class);
+Route::post('/coin/sell',SellCoinController::class);
 Route::post('/wallet/open',OpenWalletController::class);
 Route::get('/wallet/{wallet_id}',GetCoinController::class);
 Route::get('/wallet/{wallet_id}/balance',GetCoinController::class);

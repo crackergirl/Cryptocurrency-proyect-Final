@@ -1,17 +1,15 @@
 <?php
 
-
 namespace Tests\Application\CoinLoreServiceTest;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Infrastructure\Cache\WalletCache;
 use Tests\TestCase;
-use Exception;
 use Mockery;
 use App\Application\API\OpenWalletService;
 
 class OpenWalletTest extends TestCase
 {
     private OpenWalletService $openWalletService;
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private WalletCache $walletCache;
 
     /**
      * @setUp
@@ -20,33 +18,19 @@ class OpenWalletTest extends TestCase
     {
         parent::setUp();
 
-        $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
+        $this->walletCache = Mockery::mock(WalletCache::class);
 
-        $this->openWalletService = new OpenWalletService($this->coinLoreCryptoDataSource);
+        $this->openWalletService = new OpenWalletService($this->walletCache);
     }
 
-    /**
-     * @test
-     */
-    public function genericError()
-    {
-        $this->coinLoreCryptoDataSource
-            ->expects('openWallet')
-            ->once()
-            ->andThrow(new Exception('A coin with specified ID was not found.',404));
-
-        $this->expectException(Exception::class);
-
-        $this->openWalletService->execute();
-    }
 
     /**
      * @test
      */
     public function openWalletSuccessful()
     {
-        $this->coinLoreCryptoDataSource
-            ->expects('openWallet')
+        $this->walletCache
+            ->expects('open')
             ->once()
             ->andReturn("1");
 
