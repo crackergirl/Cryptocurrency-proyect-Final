@@ -24,15 +24,18 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_TIMEOUT => 30
         ));
-
-        $coin = json_decode(curl_exec($curl));
+        $curl_execution=curl_exec($curl);
+        if($curl_execution==false)
+        {
+            throw new Exception('Service unavailable',Response::HTTP_SERVICE_UNAVAILABLE);
+        }
+        $coin = json_decode($curl_execution);
         curl_close($curl);
         if(empty($coin)){
             throw new Exception('A coin with specified ID was not found.',Response::HTTP_NOT_FOUND);
         }
-        $coin_object = new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd,$coin[0]->rank);
 
-        return $coin_object;
+        return new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, 1, $coin[0]->price_usd,$coin[0]->rank);
     }
 
 }
