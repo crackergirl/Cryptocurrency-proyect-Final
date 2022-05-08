@@ -2,13 +2,13 @@
 
 namespace Tests\app\Application\Validation;
 use Tests\TestCase;
-use App\Infrastructure\Validation\ParametersValidation;
+use App\Infrastructure\Validation\BuyCoinParametersValidation;
 use Illuminate\Http\Request;
 use Exception;
 
-class ParametersValidationTest extends TestCase
+class BuyCoinParametersValidationTest extends TestCase
 {
-    private ParametersValidation $parametersValidation;
+    private BuyCoinParametersValidation $parametersValidation;
     private Request $request;
 
     /**
@@ -18,7 +18,7 @@ class ParametersValidationTest extends TestCase
     {
         parent::setUp();
 
-        $this->parametersValidation = new ParametersValidation();
+        $this->parametersValidation = new BuyCoinParametersValidation();
         $this->request = new Request();
         $this->request->setMethod('POST');
     }

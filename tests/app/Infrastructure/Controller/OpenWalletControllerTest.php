@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-
 use App\Infrastructure\Cache\WalletCache;
 use Illuminate\Http\Response;
 use Tests\TestCase;

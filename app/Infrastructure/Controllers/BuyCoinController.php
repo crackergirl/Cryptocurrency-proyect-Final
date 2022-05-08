@@ -7,17 +7,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use App\Infrastructure\Validation\ParametersValidation;
+use App\Infrastructure\Validation\BuyCoinParametersValidation;
 
 class BuyCoinController extends BaseController
 {
     private BuyCoinService $buyCoinService;
-    private ParametersValidation $parametersValidation;
+    private BuyCoinParametersValidation $parametersValidation;
 
     public function __construct(BuyCoinService $buyCoinService)
     {
         $this->buyCoinService = $buyCoinService;
-        $this->parametersValidation = new ParametersValidation();
+        $this->parametersValidation = new BuyCoinParametersValidation();
     }
 
     /**

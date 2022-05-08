@@ -4,7 +4,7 @@ namespace App\Infrastructure\Validation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ParametersValidation
+class BuyCoinParametersValidation
 {
     /***
      * @throws \Exception
