@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
-
 use App\Application\API\SellCoinService;
-use App\Infrastructure\Validation\ParametersValidation;
+use App\Infrastructure\Validation\BuyCoinParametersValidation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,12 +11,12 @@ use Exception;
 class SellCoinController
 {
     private SellCoinService $sellCoinService;
-    private ParametersValidation $parametersValidation;
+    private BuyCoinParametersValidation $parametersValidation;
 
     public function __construct(SellCoinService $sellCoinService)
     {
         $this->sellCoinService = $sellCoinService;
-        $this->parametersValidation = new ParametersValidation();
+        $this->parametersValidation = new BuyCoinParametersValidation();
     }
 
     /**

@@ -36,4 +36,14 @@ class WalletCache
         Cache::put('wallet'.$wallet_id,$wallet,600);
     }
 
+    public function getBalance(string $wallet_id): float
+    {
+        try {
+            $wallet = $this->get($wallet_id);
+        } catch (Exception) {
+            throw new Exception('A wallet with specified ID was not found.',Response::HTTP_NOT_FOUND);
+        }
+        return ($wallet->getProfit() - $wallet->getExpenses());
+    }
+
 }
