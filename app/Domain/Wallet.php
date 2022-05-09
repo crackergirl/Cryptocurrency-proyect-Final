@@ -47,11 +47,6 @@ class Wallet
         $this->profit = $profit;
     }
 
-    public function getCoins(): array
-    {
-        return $this->coins;
-    }
-
     public function setCoins(Coin $coin,float $amount_usd): void
     {
         $this->coins[$coin->getCoinId()] = array($coin,$amount_usd);
@@ -73,6 +68,22 @@ class Wallet
     public function existCoin(string $coin_id):bool
     {
         return array_key_exists($coin_id, $this->coins);
+    }
+
+    public function toJson(): string|false
+    {
+        $coinArray_toJson = array();
+        foreach ($this->coins as list ($coin, $amount_usd)){
+            $coinArray_toJson[] = [
+                /** @var Coin $coin */
+                'coin_id' => $coin->getCoinId(),
+                'name' => $coin->getName(),
+                'symbol' => $coin->getSymbol(),
+                'amount' => $amount_usd,
+                'value_usd' => floatval($coin->getPriceUsd())
+            ];
+        }
+        return json_encode($coinArray_toJson);
     }
 
 }

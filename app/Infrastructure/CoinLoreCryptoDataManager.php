@@ -12,7 +12,7 @@ class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
     /***
      * @throws Exception
      */
-     public function getCoin(string $coin_id): Coin
+     public function getCoin(string $coin_id): Coin//1clases
     {
         $curl = curl_init();
 

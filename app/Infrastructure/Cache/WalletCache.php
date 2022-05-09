@@ -7,7 +7,7 @@ use Exception;
 
 class WalletCache
 {
-    public function open():string
+    public function open():string//servicio
     {
         $wallet_id = 1;
         while(Cache::has('wallet'.$wallet_id)){
@@ -36,7 +36,7 @@ class WalletCache
         Cache::put('wallet'.$wallet_id,$wallet,600);
     }
 
-    public function getBalance(string $wallet_id): float
+    public function getBalance(string $wallet_id): float//servicio
     {
         try {
             $wallet = $this->get($wallet_id);
@@ -44,6 +44,16 @@ class WalletCache
             throw new Exception('A wallet with specified ID was not found.',Response::HTTP_NOT_FOUND);
         }
         return ($wallet->getProfit() - $wallet->getExpenses());
+    }
+
+    public function getWallet(string $wallet_id): Wallet
+    {
+        try{
+            $wallet = $this->get($wallet_id);
+        } catch (Exception) {
+            throw new Exception('A wallet with specified ID was not found.',Response::HTTP_NOT_FOUND);
+        }
+        return $wallet;
     }
 
 }

@@ -10,7 +10,7 @@ class BuyCoinParametersValidation
     /***
      * @throws Exception
      */
-    public function execute(Request $request): bool
+    public function execute(Request $request): bool//cambiar nombre
     {
         if(!$request->exists('coin_id')){
             throw new Exception('coin_id mandatory',Response::HTTP_BAD_REQUEST);

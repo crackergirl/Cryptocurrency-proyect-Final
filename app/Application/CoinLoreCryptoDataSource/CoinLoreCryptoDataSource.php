@@ -3,7 +3,7 @@
 namespace App\Application\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 
-Interface CoinLoreCryptoDataSource
+Interface CoinLoreCryptoDataSource//cambiar nombre
 {
     public function getCoin(string $coin): Coin;
 }
