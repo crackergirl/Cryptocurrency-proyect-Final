@@ -2,34 +2,33 @@
 
 namespace App\Application\API;
 
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 use App\Domain\Wallet;
-use App\Infrastructure\Cache\WalletCache;
+use App\Application\CacheSource\CacheSource;
 use Exception;
 use Illuminate\Http\Response;
 
 
 class SellCoinService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
-    private WalletCache $walletCache;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    private CacheSource $walletCache;
+
+    public function __construct(CacheSource $walletCache)
     {
-        $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
-        $this->walletCache = new WalletCache();
+        $this->walletCache = $walletCache;
+
     }
 
     /***
      * @throws Exception
      */
-    public function execute(string $coin_id,string $wallet_id,float $amount_usd): string
+    public function execute(string $coin_id,string $wallet_id,float $amount_usd, Coin $coin): string
     {
         try {
-            $actual_coin = $this->coinLoreCryptoDataSource->getCoin($coin_id);
+
             $wallet = $this->exceptionWallet($coin_id,$wallet_id,$amount_usd);
-            $this->sellCoin($coin_id, $actual_coin,$wallet_id,$wallet,$amount_usd);
+            $this->sellCoin($coin_id, $coin,$wallet_id,$wallet,$amount_usd);
 
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());

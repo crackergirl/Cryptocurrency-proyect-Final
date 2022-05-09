@@ -2,7 +2,7 @@
 
 namespace Tests\app\Infrastructure\Controller;
 use App\Domain\Wallet;
-use App\Infrastructure\Cache\WalletCache;
+use App\Application\CacheSource\CacheSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
@@ -11,7 +11,7 @@ use App\Domain\Coin;
 
 class GetWalletControllerTest extends TestCase
 {
-    private WalletCache $walletCache;
+    private CacheSource $walletCache;
 
     /**
      * @setUp
@@ -20,9 +20,9 @@ class GetWalletControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->walletCache = Mockery::mock(WalletCache::class);
+        $this->walletCache = Mockery::mock(CacheSource::class);
 
-        $this->app->bind(WalletCache::class, fn () => $this->walletCache);
+        $this->app->bind(CacheSource::class, fn () => $this->walletCache);
     }
 
     /**
@@ -31,7 +31,7 @@ class GetWalletControllerTest extends TestCase
     public function genericError()
     {
         $this->walletCache
-            ->expects('getWallet')
+            ->expects('get')
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
@@ -46,7 +46,7 @@ class GetWalletControllerTest extends TestCase
     public function walletNotFound()
     {
         $this->walletCache
-            ->expects('getWallet')
+            ->expects('get')
             ->once()
             ->andThrow(new Exception('a wallet with the specified ID was not found',404));
 
@@ -66,7 +66,7 @@ class GetWalletControllerTest extends TestCase
         $wallet->setCoins($coin1,7);
         $wallet->setCoins($coin2,3);
         $this->walletCache
-            ->expects('getWallet')
+            ->expects('get')
             ->once()
             ->andReturn($wallet);
 

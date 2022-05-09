@@ -1,16 +1,16 @@
 <?php
-namespace App\Infrastructure\Validation;
+namespace App\Infrastructure\Validator;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
 
-class BuyCoinParametersValidation
+class ParametersValidator
 {
     /***
      * @throws Exception
      */
-    public function execute(Request $request): bool//cambiar nombre
+    public function validateCoinWalletAmount(Request $request): bool
     {
         if(!$request->exists('coin_id')){
             throw new Exception('coin_id mandatory',Response::HTTP_BAD_REQUEST);
@@ -26,4 +26,5 @@ class BuyCoinParametersValidation
         }
         return true;
     }
+
 }

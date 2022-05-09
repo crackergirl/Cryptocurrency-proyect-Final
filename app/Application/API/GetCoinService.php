@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Application\API;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use Exception;
 
 class GetCoinService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataSource;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    public function __construct(CryptoDataSource $coinLoreCryptoDataSource)
     {
         $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
     }

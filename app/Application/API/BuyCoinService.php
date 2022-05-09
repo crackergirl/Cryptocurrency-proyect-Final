@@ -1,29 +1,28 @@
 <?php
 
 namespace App\Application\API;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+
+use App\Application\CacheSource\CacheSource;
 use App\Domain\Coin;
-use App\Infrastructure\Cache\WalletCache;
+
 use Exception;
 
 class BuyCoinService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private CacheSource $walletCache;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    public function __construct(CacheSource $cacheSource)
     {
-        $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
+        $this->walletCache = $cacheSource;
     }
 
     /***
      * @throws Exception
      */
-    public function execute(string $coin_id,string $wallet_id,float $amount_usd): string
+    public function execute(string $coin_id,string $wallet_id,float $amount_usd, Coin $coin): string
     {
         try
         {
-            $coin = $this->coinLoreCryptoDataSource->getCoin($coin_id);
-
             $this->buyCoin($coin_id,$wallet_id,$amount_usd,$coin);
 
         }catch (Exception $exception){
@@ -38,16 +37,15 @@ class BuyCoinService
      */
     private function buyCoin(string $coin_id,string $wallet_id,float $amount_usd, Coin $coin):void{
 
-        $walletCache = new WalletCache();
 
-        $wallet = $walletCache->get($wallet_id);
+        $wallet = $this->walletCache->get($wallet_id);
 
         $wallet->existCoin($coin_id)?
             $wallet->setCoins($coin,$wallet->getAmountCoinByID($coin_id) + $amount_usd):
             $wallet->setCoins($coin,$amount_usd);
         $wallet->setExpenses($wallet->getExpenses() + floatval($coin->getPriceUsd())*$amount_usd);
 
-        $walletCache->set($wallet_id,$wallet);
+        $this->walletCache->set($wallet_id,$wallet);
 
     }
 }

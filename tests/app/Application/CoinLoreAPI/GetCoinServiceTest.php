@@ -1,17 +1,17 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use Tests\TestCase;
 use Exception;
 use Mockery;
 use App\Application\API\GetCoinService;
 
-class ServiceGetCoinTest extends TestCase
+class GetCoinServiceTest extends TestCase
 {
     private GetCoinService $getCoinService;
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataSource;
 
     /**
     * @setUp
@@ -20,7 +20,7 @@ class ServiceGetCoinTest extends TestCase
     {
         parent::setUp();
 
-        $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
+        $this->coinLoreCryptoDataSource = Mockery::mock(CryptoDataSource::class);
 
         $this->getCoinService = new GetCoinService($this->coinLoreCryptoDataSource);
     }

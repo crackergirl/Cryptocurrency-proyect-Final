@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
+
+use App\Application\API\GetCoinService;
 use App\Application\API\SellCoinService;
-use App\Infrastructure\Validation\BuyCoinParametersValidation;
+use App\Infrastructure\Validator\ParametersValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,12 +13,14 @@ use Exception;
 class SellCoinController
 {
     private SellCoinService $sellCoinService;
-    private BuyCoinParametersValidation $parametersValidation;
+    private GetCoinService $getCoinService;
+    private ParametersValidator $parametersValidation;
 
-    public function __construct(SellCoinService $sellCoinService)
+    public function __construct(SellCoinService $sellCoinService,GetCoinService $getCoinService)
     {
         $this->sellCoinService = $sellCoinService;
-        $this->parametersValidation = new BuyCoinParametersValidation();
+        $this->getCoinService = $getCoinService;
+        $this->parametersValidation = new ParametersValidator();
     }
 
     /**
@@ -26,9 +30,10 @@ class SellCoinController
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $this->parametersValidation->execute($request);
+            $this->parametersValidation->validateCoinWalletAmount($request);
+            $coin = $this->getCoinService->execute($request->input('coin_id'));
             $requestStatus = $this->sellCoinService->execute($request->input('coin_id'),
-                $request->input('wallet_id'),$request->input('amount_usd'));
+                $request->input('wallet_id'),$request->input('amount_usd'),$coin);
 
         }catch (Exception $exception) {
             return response()->json([

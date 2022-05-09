@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Infrastructure;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use Illuminate\Http\Response;
 use Exception;
 
-class CoinLoreCryptoDataManager implements CoinLoreCryptoDataSource
+class CoinLoreCryptoDataManager implements CryptoDataSource
 {
 
     /***

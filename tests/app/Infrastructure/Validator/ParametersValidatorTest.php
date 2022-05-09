@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\app\Application\Validation;
+namespace Tests\app\Application\Validator;
 use Tests\TestCase;
-use App\Infrastructure\Validation\BuyCoinParametersValidation;
+use App\Infrastructure\Validator\ParametersValidator;
 use Illuminate\Http\Request;
 use Exception;
 
-class BuyCoinParametersValidationTest extends TestCase
+class ParametersValidatorTest extends TestCase
 {
-    private BuyCoinParametersValidation $parametersValidation;
+    private ParametersValidator $parametersValidator;
     private Request $request;
 
     /**
@@ -18,7 +18,7 @@ class BuyCoinParametersValidationTest extends TestCase
     {
         parent::setUp();
 
-        $this->parametersValidation = new BuyCoinParametersValidation();
+        $this->parametersValidator = new ParametersValidator();
         $this->request = new Request();
         $this->request->setMethod('POST');
     }
@@ -26,23 +26,24 @@ class BuyCoinParametersValidationTest extends TestCase
     /**
      * @test
      */
-    public function validationError()
+    public function errorValidator()
     {
         $this->request->request->add(['coin_id' => '12345','wallet_id'=>'1']);
 
         $this->expectException(Exception::class);
 
-        $this->parametersValidation->execute($this->request);
+        $this->parametersValidator->validateCoinWalletAmount($this->request);
     }
 
     /**
      * @test
+     * @throws Exception
      */
-    public function validationOK()
+    public function OKValidator()
     {
         $this->request->request->add(['coin_id' => '12345','wallet_id'=>'1', 'amount_usd'=> 0]);
 
-        $response = $this->parametersValidation->execute($this->request);
+        $response = $this->parametersValidator->validateCoinWalletAmount($this->request);
 
         $this->assertTrue($response);
     }

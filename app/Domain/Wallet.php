@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Domain;
-use App\Domain\Coin;
 
 class Wallet
 {

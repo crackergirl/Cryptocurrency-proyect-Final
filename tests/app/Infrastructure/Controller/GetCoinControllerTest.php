@@ -2,7 +2,7 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
+use App\Application\DataSource\CryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
@@ -11,7 +11,7 @@ use Mockery;
 
 class GetCoinControllerTest extends TestCase
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataSource;
 
     /**
      * @setUp
@@ -20,9 +20,9 @@ class GetCoinControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
+        $this->coinLoreCryptoDataSource = Mockery::mock(CryptoDataSource::class);
 
-        $this->app->bind(CoinLoreCryptoDataSource::class, fn () => $this->coinLoreCryptoDataSource);
+        $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataSource);
     }
 
     /**
