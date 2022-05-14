@@ -21,10 +21,22 @@ class WalletCache implements CacheSource
         return Cache::get('wallet'.$wallet_id);
     }
 
-    public function set(string $wallet_id, Wallet $wallet): void
+    public function set(string $wallet_id, Wallet $wallet): bool
     {
         Cache::forget('wallet'.$wallet_id);
         Cache::put('wallet'.$wallet_id,$wallet,600);
+        return true;
+    }
+
+    public function create(string $wallet_id, Wallet $wallet): bool
+    {
+        Cache::put('wallet'.$wallet_id,$wallet,600);
+        return true;
+    }
+
+    public function exists(string $walletId): bool
+    {
+        return Cache::has('wallet'.$walletId);
     }
 
 

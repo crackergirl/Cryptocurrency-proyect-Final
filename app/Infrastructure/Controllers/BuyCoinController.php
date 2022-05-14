@@ -14,12 +14,12 @@ class BuyCoinController extends BaseController
 {
     private BuyCoinService $buyCoinService;
     private GetCoinService $getCoinService;
-    private ParametersValidator $parametersValidation;
+    private ParametersValidator $parametersValidator;
 
     public function __construct(BuyCoinService $buyCoinService,GetCoinService $getCoinService)
     {
         $this->buyCoinService = $buyCoinService;
-        $this->parametersValidation = new ParametersValidator();
+        $this->parametersValidator = new ParametersValidator();
         $this->getCoinService = $getCoinService;
     }
 
@@ -30,7 +30,7 @@ class BuyCoinController extends BaseController
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $this->parametersValidation->validateCoinWalletAmount($request);
+            $this->parametersValidator->coinParametersValidator($request);
             $coin = $this->getCoinService->execute($request->input('coin_id'));
             $requestStatus = $this->buyCoinService->execute($request->input('coin_id'),
                 $request->input('wallet_id'),$request->input('amount_usd'),$coin );

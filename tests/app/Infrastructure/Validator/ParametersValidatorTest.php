@@ -26,25 +26,121 @@ class ParametersValidatorTest extends TestCase
     /**
      * @test
      */
-    public function errorValidator()
+    public function errorCoinIdValidatorNotFound()
     {
-        $this->request->request->add(['coin_id' => '12345','wallet_id'=>'1']);
+        $this->request->request->add(['amount_usd' => 3,'wallet_id'=>'1']);
 
-        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('coin_id mandatory');
 
-        $this->parametersValidator->validateCoinWalletAmount($this->request);
+        $this->parametersValidator->coinParametersValidator($this->request);
     }
 
     /**
      * @test
-     * @throws Exception
      */
-    public function OKValidator()
+    public function errorWalletIdValidatorNotFound()
     {
-        $this->request->request->add(['coin_id' => '12345','wallet_id'=>'1', 'amount_usd'=> 0]);
+        $this->request->request->add(['amount_usd' => 3,'coin_id'=>'90']);
 
-        $response = $this->parametersValidator->validateCoinWalletAmount($this->request);
+        $this->expectExceptionMessage('wallet_id mandatory');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function errorAmountValidatorNotFound()
+    {
+        $this->request->request->add(['wallet_id' => '3','coin_id'=>'90']);
+
+        $this->expectExceptionMessage('amount_usd mandatory');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function errorAmountValidatorNotNumber()
+    {
+        $this->request->request->add(['wallet_id' => '1','coin_id'=>'90','amount_usd' => 'amount']);
+
+        $this->expectExceptionMessage('amount_usd mandatory');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function errorWalletIdValidatorNotNumber()
+    {
+        $this->request->request->add(['wallet_id' => '','coin_id'=>'90','amount_usd' => 3]);
+
+        $this->expectExceptionMessage('wallet_id mandatory');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function errorCoinIdValidatorNotNumber()
+    {
+        $this->request->request->add(['wallet_id' => '1','coin_id'=>'et4','amount_usd' => 3]);
+
+        $this->expectExceptionMessage('coin_id mandatory');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function errorAmountValidatorInvalidNumber()
+    {
+        $this->request->request->add(['wallet_id' => '1','coin_id'=>'90','amount_usd' => 0]);
+
+        $this->expectExceptionMessage('amount_usd must be over 0');
+
+        $this->parametersValidator->coinParametersValidator($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function coinParameterValidatorOk()
+    {
+        $this->request->request->add(['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 4]);
+
+        $response = $this->parametersValidator->coinParametersValidator($this->request);
 
         $this->assertTrue($response);
     }
+
+    /**
+     * @test
+     */
+    public function idValidatorOk()
+    {
+        $coin_id = '3';
+
+        $response = $this->parametersValidator->idNumberValidator($coin_id);
+
+        $this->assertTrue($response);
+    }
+
+    /**
+     * @test
+     */
+    public function idValidatorError()
+    {
+        $coin_id = 'wallet_id';
+
+        $this->expectExceptionMessage('Invalid parameter format');
+
+        $response = $this->parametersValidator->idNumberValidator($coin_id);
+    }
+
 }

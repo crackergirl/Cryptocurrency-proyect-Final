@@ -64,8 +64,6 @@ class SellCoinService
         $wallet->setCoins($coin,$amount_coin_wallet - $amount_usd);
 
         $this->walletCache->set($wallet_id,$wallet);
-
     }
-
 
 }

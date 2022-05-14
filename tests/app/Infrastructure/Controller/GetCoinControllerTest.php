@@ -32,7 +32,7 @@ class GetCoinControllerTest extends TestCase
     {
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')
-            ->with(90)
+            ->with('90')
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
@@ -46,17 +46,22 @@ class GetCoinControllerTest extends TestCase
      */
     public function coinExists()
     {
-        $coin = new Coin('1','1','1','1','1',1);
+        $coin = new Coin('90','1','1','1','1',1);
 
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')
-            ->with(90)
+            ->with('90')
             ->once()
-            ->andReturn($coin);
+            ->andReturn(json_encode(array(['id' => '90',
+                'name' => '1',
+                'symbol' => '1',
+                'nameid' => '1',
+                'price_usd' => '1',
+                'rank' => 1])));
 
         $response = $this->get('/api/coin/status/90');
 
-        $response->assertStatus(Response::HTTP_OK)->assertExactJson(['{"coin_id":"1","name":"1","symbol":"1","name_id":"1","rank":1,"price_usd":"1"}']);
+        $response->assertStatus(Response::HTTP_OK)->assertExactJson(['{"coin_id":"90","name":"1","symbol":"1","name_id":"1","rank":1,"price_usd":"1"}']);
     }
 
     /**
@@ -67,7 +72,7 @@ class GetCoinControllerTest extends TestCase
 
         $this->coinLoreCryptoDataSource
             ->expects('getCoin')
-            ->with(90)
+            ->with('90')
             ->once()
             ->andThrow(new Exception('A coin with specified ID was not found.',404));
 

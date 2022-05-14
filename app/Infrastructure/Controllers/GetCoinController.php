@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Controllers;
 use App\Application\API\GetCoinService;
+use App\Infrastructure\Validator\ParametersValidator;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -10,15 +11,18 @@ use Illuminate\Routing\Controller as BaseController;
 class GetCoinController extends BaseController
 {
     private GetCoinService $getCoinService;
+    private ParametersValidator $parametersValidator;
 
     public function __construct(GetCoinService $getCoinService)
     {
         $this->getCoinService = $getCoinService;
+        $this->parametersValidator = new ParametersValidator();
     }
 
     public function __invoke(string $id_coin): JsonResponse
     {
         try {
+            $this->parametersValidator->idNumberValidator($id_coin);
             $coin = $this->getCoinService->execute($id_coin);
 
         }catch (Exception $exception) {

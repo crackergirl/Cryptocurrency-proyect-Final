@@ -46,6 +46,5 @@ class BuyCoinService
         $wallet->setExpenses($wallet->getExpenses() + floatval($coin->getPriceUsd())*$amount_usd);
 
         $this->walletCache->set($wallet_id,$wallet);
-
     }
 }

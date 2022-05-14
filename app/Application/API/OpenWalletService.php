@@ -4,7 +4,6 @@ namespace App\Application\API;
 use App\Domain\Wallet;
 use App\Application\CacheSource\CacheSource;
 use Exception;
-use Illuminate\Support\Facades\Cache;
 
 class OpenWalletService
 {
@@ -26,21 +25,28 @@ class OpenWalletService
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
-
-
     }
 
     public function open():string
     {
+        $wallet_id=$this->createWalletId();
+        $this->insertWalletInCache($wallet_id);
+        return strval($wallet_id);
+    }
+
+    public function createWalletId(): float
+    {
         $wallet_id = 1;
 
-        while(Cache::has('wallet'.$wallet_id)){
+        while($this->walletCache->exists($wallet_id)){
             $wallet_id+=1;
         }
+        return $wallet_id;
+    }
 
+    public function insertWalletInCache(float $wallet_id): bool
+    {
         $wallet = new Wallet($wallet_id);
-        $this->walletCache->set($wallet_id,$wallet);
-
-        return strval($wallet_id);
+        return $this->walletCache->create($wallet_id,$wallet);
     }
 }

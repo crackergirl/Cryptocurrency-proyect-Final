@@ -32,6 +32,7 @@ class GetBalanceWalletControllerTest extends TestCase
     {
         $this->walletCache
             ->expects('get')
+            ->with('1')
             ->once()
             ->andThrow(new Exception('Service unavailable',503));
 
@@ -48,6 +49,7 @@ class GetBalanceWalletControllerTest extends TestCase
         $this->walletCache
             ->expects('get')
             ->once()
+            ->with('1')
             ->andThrow(new Exception('a wallet with the specified ID was not found.',404));
 
         $response = $this->get('api/wallet/1/balance');

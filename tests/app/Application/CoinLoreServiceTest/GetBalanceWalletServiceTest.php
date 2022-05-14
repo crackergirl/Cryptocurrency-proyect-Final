@@ -36,7 +36,23 @@ class GetBalanceWalletServiceTest extends TestCase
             ->once()
             ->andThrow(new Exception('a wallet with the specified ID was not found.'));
 
-        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('a wallet with the specified ID was not found.');
+
+        $this->getBalanceWalletService->execute('1');
+    }
+
+    /**
+     * @test
+     */
+    public function genericError()
+    {
+        $this->walletCache
+            ->expects('get')
+            ->with('1')
+            ->once()
+            ->andThrow(new Exception('Service unavailable'));
+
+        $this->expectExceptionMessage('Service unavailable');
 
         $this->getBalanceWalletService->execute('1');
     }
