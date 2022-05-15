@@ -8,11 +8,11 @@ use Exception;
 
 class APIClient
 {
-    private CryptoDataSource $cryptoDataSource;
+    private CryptoDataSource $cryptoDataManager;
 
-    public function __construct(CryptoDataSource $cryptoDataSource)
+    public function __construct(CryptoDataSource $cryptoDataManager)
     {
-        $this->cryptoDataSource =$cryptoDataSource;
+        $this->cryptoDataManager = $cryptoDataManager;
     }
 
     /***
@@ -21,7 +21,7 @@ class APIClient
     public function getCoin(string $coinId): Coin
     {
         try {
-            $coin = json_decode($this->cryptoDataSource->getCoin($coinId));
+            $coin = json_decode($this->cryptoDataManager->getCoin($coinId));
             if(empty($coin)){
                 throw new Exception('A coin with specified ID was not found.',Response::HTTP_NOT_FOUND);
             }
@@ -30,5 +30,4 @@ class APIClient
         }
         return new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, $coin[0]->nameid, $coin[0]->price_usd,$coin[0]->rank);
     }
-
 }

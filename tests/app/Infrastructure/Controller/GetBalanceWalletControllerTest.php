@@ -65,7 +65,6 @@ class GetBalanceWalletControllerTest extends TestCase
         $wallet = new Wallet("1");
         $wallet->setProfit(1);
         $wallet->setExpenses(1);
-
         $this->walletCache
             ->expects('get')
             ->with('1')

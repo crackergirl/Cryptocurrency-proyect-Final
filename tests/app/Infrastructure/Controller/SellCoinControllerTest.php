@@ -1,12 +1,10 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-
 use App\Application\CacheSource\CacheSource;
 use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use App\Domain\Wallet;
-use App\Infrastructure\Cache\WalletCache;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
@@ -15,7 +13,7 @@ use Mockery;
 class SellCoinControllerTest extends TestCase
 {
     private CacheSource $walletCache;
-    private CryptoDataSource $cryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataManager;
 
     /**
      * @setUp
@@ -25,10 +23,10 @@ class SellCoinControllerTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-        $this->cryptoDataSource = Mockery::mock(CryptoDataSource::class);
+        $this->coinLoreCryptoDataManager = Mockery::mock(CryptoDataSource::class);
 
         $this->app->bind(CacheSource::class, fn () => $this->walletCache);
-        $this->app->bind(CryptoDataSource::class, fn () => $this->cryptoDataSource);
+        $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataManager);
     }
 
     /**
@@ -37,7 +35,7 @@ class SellCoinControllerTest extends TestCase
     public function genericError()
     {
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -55,7 +53,7 @@ class SellCoinControllerTest extends TestCase
     {
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
         $wallet = new Wallet('1');
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -85,7 +83,7 @@ class SellCoinControllerTest extends TestCase
         $wallet = new Wallet('1');
         $wallet->setCoins($coin,4);
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()

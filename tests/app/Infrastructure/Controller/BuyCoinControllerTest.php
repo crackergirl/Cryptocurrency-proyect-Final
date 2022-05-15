@@ -1,10 +1,8 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-
 use App\Application\CacheSource\CacheSource;
 use App\Application\DataSource\CryptoDataSource;
-use App\Domain\Coin;
 use App\Domain\Wallet;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -14,7 +12,7 @@ use Mockery;
 class BuyCoinControllerTest extends TestCase
 {
     private CacheSource $walletCache;
-    private CryptoDataSource $cryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataManager;
 
     /**
      * @setUp
@@ -24,10 +22,10 @@ class BuyCoinControllerTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-        $this->cryptoDataSource = Mockery::mock(CryptoDataSource::class);
+        $this->coinLoreCryptoDataManager = Mockery::mock(CryptoDataSource::class);
 
         $this->app->bind(CacheSource::class, fn () => $this->walletCache);
-        $this->app->bind(CryptoDataSource::class, fn () => $this->cryptoDataSource);
+        $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataManager);
     }
 
     /**
@@ -36,7 +34,7 @@ class BuyCoinControllerTest extends TestCase
     public function genericError()
     {
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -53,7 +51,7 @@ class BuyCoinControllerTest extends TestCase
     public function coinNotExists()
     {
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -71,7 +69,7 @@ class BuyCoinControllerTest extends TestCase
     {
         $wallet = new Wallet('1');
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->cryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()

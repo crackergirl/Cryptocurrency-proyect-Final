@@ -19,11 +19,15 @@ class GetCoinController extends BaseController
         $this->parametersValidator = new ParametersValidator();
     }
 
-    public function __invoke(string $id_coin): JsonResponse
+    /**
+     * @param string $coinId
+     * @return JsonResponse
+     */
+    public function __invoke(string $coinId): JsonResponse
     {
         try {
-            $this->parametersValidator->idNumberValidator($id_coin);
-            $coin = $this->getCoinService->execute($id_coin);
+            $this->parametersValidator->idNumberValidator($coinId);
+            $coin = $this->getCoinService->execute($coinId);
 
         }catch (Exception $exception) {
             return response()->json([

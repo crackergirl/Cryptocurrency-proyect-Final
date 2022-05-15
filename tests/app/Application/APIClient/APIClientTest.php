@@ -3,7 +3,6 @@
 namespace Tests\Application\CoinLoreServiceTest;
 use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
-use App\Infrastructure\CryptoDataManager;
 use App\Infrastructure\APIClient;
 use Tests\TestCase;
 use Exception;
@@ -11,7 +10,7 @@ use Mockery;
 
 class APIClientTest extends TestCase
 {
-    private CryptoDataSource $cryptoDataSource;
+    private CryptoDataSource $cryptoDataManager;
     private APIClient $apiClient;
 
     /**
@@ -21,8 +20,8 @@ class APIClientTest extends TestCase
     {
         parent::setUp();
 
-        $this->cryptoDataSource = Mockery::mock(CryptoDataSource::class);
-        $this->apiClient = new APIClient($this->cryptoDataSource);
+        $this->cryptoDataManager = Mockery::mock(CryptoDataSource::class);
+        $this->apiClient = new APIClient($this->cryptoDataManager);
     }
 
     /**
@@ -31,7 +30,7 @@ class APIClientTest extends TestCase
      */
     public function curlError()
     {
-        $this->cryptoDataSource
+        $this->cryptoDataManager
             ->expects('getCoin')
             ->with('-1')
             ->once()
@@ -48,21 +47,17 @@ class APIClientTest extends TestCase
     public function coinFound()
     {
         $coin = new Coin('1','1','1','1','1',1);
-
-        $this->cryptoDataSource
+        $this->cryptoDataManager
             ->expects('getCoin')
             ->with('1')
             ->once()
             ->andReturn(json_encode(array(['id' => '1',
-                                            'name' => '1',
-                                            'symbol' => '1',
-                                            'nameid' => '1',
-                                            'price_usd' => '1',
-                                            'rank' => 1])));
+                'name' => '1', 'symbol' => '1',
+                'nameid' => '1', 'price_usd' => '1',
+                'rank' => 1])));
 
         $response = $this->apiClient->getCoin('1');
 
         $this->assertEquals($coin,$response);
     }
-
 }

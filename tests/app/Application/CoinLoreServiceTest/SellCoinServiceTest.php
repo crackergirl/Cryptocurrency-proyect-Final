@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-
 use App\Application\API\SellCoinService;
 use App\Application\CacheSource\CacheSource;
 use App\Domain\Coin;
@@ -12,7 +11,6 @@ use Mockery;
 
 class SellCoinServiceTest extends TestCase
 {
-
     private SellCoinService $sellCoinService;
     private CacheSource $walletCache;
 
@@ -124,5 +122,4 @@ class SellCoinServiceTest extends TestCase
 
         $this->assertEquals("successful operation",$response);
     }
-
 }

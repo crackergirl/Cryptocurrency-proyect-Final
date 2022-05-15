@@ -4,7 +4,6 @@ namespace Tests\app\Application\Validator;
 use Tests\TestCase;
 use App\Infrastructure\Validator\ParametersValidator;
 use Illuminate\Http\Request;
-use Exception;
 
 class ParametersValidatorTest extends TestCase
 {
@@ -124,9 +123,9 @@ class ParametersValidatorTest extends TestCase
      */
     public function idValidatorOk()
     {
-        $coin_id = '3';
+        $coinId = '3';
 
-        $response = $this->parametersValidator->idNumberValidator($coin_id);
+        $response = $this->parametersValidator->idNumberValidator($coinId);
 
         $this->assertTrue($response);
     }
@@ -136,11 +135,10 @@ class ParametersValidatorTest extends TestCase
      */
     public function idValidatorError()
     {
-        $coin_id = 'wallet_id';
+        $coinId = 'wallet_id';
 
         $this->expectExceptionMessage('Invalid parameter format');
 
-        $response = $this->parametersValidator->idNumberValidator($coin_id);
+        $this->parametersValidator->idNumberValidator($coinId);
     }
-
 }

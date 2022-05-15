@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Infrastructure\Cache;
 use App\Domain\Wallet;
 use Illuminate\Http\Response;
@@ -8,29 +9,28 @@ use Exception;
 
 class WalletCache implements CacheSource
 {
-
     /***
      * @throws Exception
      */
-    public function get(string $wallet_id): Wallet
+    public function get(string $walletId): Wallet
     {
-        if(!Cache::has('wallet'.$wallet_id)){
+        if(!Cache::has('wallet'.$walletId)){
             throw new Exception('A wallet with specified ID was not found.',Response::HTTP_NOT_FOUND);
         }
         /** @var Wallet $wallet */
-        return Cache::get('wallet'.$wallet_id);
+        return Cache::get('wallet'.$walletId);
     }
 
-    public function set(string $wallet_id, Wallet $wallet): bool
+    public function set(string $walletId, Wallet $wallet): bool
     {
-        Cache::forget('wallet'.$wallet_id);
-        Cache::put('wallet'.$wallet_id,$wallet,600);
+        Cache::forget('wallet'.$walletId);
+        Cache::put('wallet'.$walletId,$wallet,600);
         return true;
     }
 
-    public function create(string $wallet_id, Wallet $wallet): bool
+    public function create(string $walletId, Wallet $wallet): bool
     {
-        Cache::put('wallet'.$wallet_id,$wallet,600);
+        Cache::put('wallet'.$walletId,$wallet,600);
         return true;
     }
 

@@ -1,10 +1,6 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-use App\Application\API\OpenWalletService;
-use App\Application\DataSource\CryptoDataSource;
-use App\Domain\Coin;
-use App\Domain\Wallet;
 use App\Application\CacheSource\CacheSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -13,7 +9,7 @@ use Mockery;
 
 class OpenWalletControllerTest extends TestCase
 {
-    private CacheSource $cacheSource;
+    private CacheSource $walletCache;
 
     /**
      * @setUp
@@ -22,9 +18,9 @@ class OpenWalletControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->cacheSource = Mockery::mock(CacheSource::class);
+        $this->walletCache = Mockery::mock(CacheSource::class);
 
-        $this->app->bind(CacheSource::class, fn () => $this->cacheSource);
+        $this->app->bind(CacheSource::class, fn () => $this->walletCache);
     }
 
     /**
@@ -32,12 +28,12 @@ class OpenWalletControllerTest extends TestCase
      */
     public function openWalletSuccessful()
     {
-        $this->cacheSource
+        $this->walletCache
             ->expects('exists')
             ->with(1)
             ->once()
             ->andReturn(false);
-        $this->cacheSource
+        $this->walletCache
             ->expects('create')
             ->with('1',Mockery::on(function($wallet){
                 return $wallet->getWalletId() === '1';
@@ -55,7 +51,7 @@ class OpenWalletControllerTest extends TestCase
      */
     public function genericError()
     {
-        $this->cacheSource
+        $this->walletCache
             ->expects('exists')
             ->with(1)
             ->once()
@@ -65,5 +61,4 @@ class OpenWalletControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
     }
-
 }

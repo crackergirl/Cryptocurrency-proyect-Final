@@ -1,10 +1,7 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-
 use App\Application\CacheSource\CacheSource;
-use App\Domain\Coin;
-use App\Domain\Wallet;
 use Tests\TestCase;
 use Mockery;
 use App\Application\API\OpenWalletService;
@@ -12,7 +9,6 @@ use Exception;
 
 class OpenWalletServiceTest extends TestCase
 {
-
     private OpenWalletService $openWalletService;
     private CacheSource $walletCache;
 

@@ -17,11 +17,10 @@ class GetCoinService
     /***
      * @throws Exception
      */
-    public function execute(string $coin_id): Coin
+    public function execute(string $coinId): Coin
     {
         try {
-            $coin = $this->apiClient->getCoin($coin_id);
-
+            $coin = $this->apiClient->getCoin($coinId);
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }

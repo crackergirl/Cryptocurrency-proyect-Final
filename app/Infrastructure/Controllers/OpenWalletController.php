@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Infrastructure\Controllers;
 use App\Application\API\OpenWalletService;
 use Exception;
@@ -23,13 +22,13 @@ class OpenWalletController extends BaseController
     public function __invoke(): JsonResponse
     {
         try {
-            $wallet_id = $this->openWalletService->execute();
+            $walletId = $this->openWalletService->execute();
         }catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
-        return response()->json(['wallet_id' => $wallet_id
+        return response()->json(['wallet_id' => $walletId
         ], Response::HTTP_OK);
     }
 }

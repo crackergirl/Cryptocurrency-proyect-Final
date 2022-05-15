@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\app\Infrastructure\Controller;
-
 use App\Application\DataSource\CryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -11,7 +10,7 @@ use Mockery;
 
 class GetCoinControllerTest extends TestCase
 {
-    private CryptoDataSource $coinLoreCryptoDataSource;
+    private CryptoDataSource $coinLoreCryptoDataManager;
 
     /**
      * @setUp
@@ -20,9 +19,9 @@ class GetCoinControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->coinLoreCryptoDataSource = Mockery::mock(CryptoDataSource::class);
+        $this->coinLoreCryptoDataManager = Mockery::mock(CryptoDataSource::class);
 
-        $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataSource);
+        $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataManager);
     }
 
     /**
@@ -30,7 +29,7 @@ class GetCoinControllerTest extends TestCase
      */
     public function genericError()
     {
-        $this->coinLoreCryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -46,9 +45,7 @@ class GetCoinControllerTest extends TestCase
      */
     public function coinExists()
     {
-        $coin = new Coin('90','1','1','1','1',1);
-
-        $this->coinLoreCryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()
@@ -69,8 +66,7 @@ class GetCoinControllerTest extends TestCase
      */
     public function coinNotExists()
     {
-
-        $this->coinLoreCryptoDataSource
+        $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
             ->once()

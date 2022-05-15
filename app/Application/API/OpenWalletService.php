@@ -21,32 +21,30 @@ class OpenWalletService
     {
         try {
             return $this->open();
-
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
     }
 
-    public function open():string
+    public function open(): string
     {
-        $wallet_id=$this->createWalletId();
-        $this->insertWalletInCache($wallet_id);
-        return strval($wallet_id);
+        $walletId=$this->createWalletId();
+        $this->insertWalletInCache($walletId);
+        return strval($walletId);
     }
 
     public function createWalletId(): float
     {
-        $wallet_id = 1;
-
-        while($this->walletCache->exists($wallet_id)){
-            $wallet_id+=1;
+        $walletId = 1;
+        while($this->walletCache->exists($walletId)){
+            $walletId+=1;
         }
-        return $wallet_id;
+        return $walletId;
     }
 
-    public function insertWalletInCache(float $wallet_id): bool
+    public function insertWalletInCache(float $walletId): bool
     {
-        $wallet = new Wallet($wallet_id);
-        return $this->walletCache->create($wallet_id,$wallet);
+        $wallet = new Wallet($walletId);
+        return $this->walletCache->create($walletId,$wallet);
     }
 }

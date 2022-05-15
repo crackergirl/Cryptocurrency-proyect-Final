@@ -1,6 +1,6 @@
 <?php
-namespace App\Infrastructure\Validator;
 
+namespace App\Infrastructure\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
@@ -30,13 +30,11 @@ class ParametersValidator
     /***
      * @throws Exception
      */
-    public function idNumberValidator(string $object_id): bool
+    public function idNumberValidator(string $objectId): bool
     {
-        if(!(is_numeric($object_id))){
+        if(!(is_numeric($objectId))){
             throw new Exception('Invalid parameter format',Response::HTTP_BAD_REQUEST);
         }
-
         return true;
     }
-
 }

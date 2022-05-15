@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-
 use App\Application\API\GetWalletService;
 use App\Application\CacheSource\CacheSource;
 use App\Domain\Coin;
@@ -79,5 +78,4 @@ class GetWalletServiceTest extends TestCase
 
         $this->assertEquals($wallet,$response);
     }
-
 }

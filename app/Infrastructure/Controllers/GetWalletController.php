@@ -19,11 +19,15 @@ class GetWalletController extends BaseController
         $this->parametersValidator = new ParametersValidator();
     }
 
-    public function __invoke(string $wallet_id): JsonResponse
+    /**
+     * @param string $walletId
+     * @return JsonResponse
+     */
+    public function __invoke(string $walletId): JsonResponse
     {
         try {
-            $this->parametersValidator->idNumberValidator($wallet_id);
-            $wallet = $this->getWalletService->execute($wallet_id);
+            $this->parametersValidator->idNumberValidator($walletId);
+            $wallet = $this->getWalletService->execute($walletId);
 
         }catch (Exception $exception) {
             return response()->json([

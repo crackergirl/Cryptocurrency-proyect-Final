@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use App\Infrastructure\APIClient;
 use Tests\TestCase;
@@ -74,5 +73,4 @@ class GetCoinServiceTest extends TestCase
 
         $this->getCoinService->execute(20);
     }
-
 }

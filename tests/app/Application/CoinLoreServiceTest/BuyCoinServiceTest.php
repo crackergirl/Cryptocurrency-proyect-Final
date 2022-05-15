@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-
 use App\Application\API\BuyCoinService;
 use App\Domain\Coin;
 use App\Domain\Wallet;
@@ -113,5 +112,4 @@ class BuyCoinServiceTest extends TestCase
 
         $this->assertEquals("successful operation",$response);
     }
-
 }
