@@ -1,27 +1,26 @@
 <?php
 
 namespace App\Application\API;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use App\Infrastructure\APIClient;
 use Exception;
 
 class GetCoinService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private APIClient $apiClient;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    public function __construct(APIClient $apiClient)
     {
-        $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
+        $this->apiClient = $apiClient;
     }
 
     /***
      * @throws Exception
      */
-    public function execute(string $coin_id): Coin
+    public function execute(string $coinId): Coin
     {
         try {
-            $coin = $this->coinLoreCryptoDataSource->getCoin($coin_id);
-
+            $coin = $this->apiClient->getCoin($coinId);
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }

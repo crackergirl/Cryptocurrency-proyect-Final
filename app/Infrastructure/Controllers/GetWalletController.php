@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
-use App\Application\API\GetBalanceWalletService;
+use App\Application\API\GetWalletService;
 use App\Infrastructure\Validator\ParametersValidator;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class GetBalanceWalletController extends BaseController
+class GetWalletController extends BaseController
 {
-    private GetBalanceWalletService $getBalanceWalletService;
+    private GetWalletService $getWalletService;
     private ParametersValidator $parametersValidator;
 
-    public function __construct(GetBalanceWalletService $getBalanceWalletService)
+    public function __construct(GetWalletService $getWalletService)
     {
-        $this->getBalanceWalletService = $getBalanceWalletService;
+        $this->getWalletService = $getWalletService;
         $this->parametersValidator = new ParametersValidator();
     }
 
@@ -27,14 +27,14 @@ class GetBalanceWalletController extends BaseController
     {
         try {
             $this->parametersValidator->idNumberValidator($walletId);
-            $balance = $this->getBalanceWalletService->execute($walletId);
+            $wallet = $this->getWalletService->execute($walletId);
 
         }catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
-        return response()->json(["balance_usd" => $balance
+        return response()->json([$wallet->toJson()
         ], Response::HTTP_OK);
     }
 }

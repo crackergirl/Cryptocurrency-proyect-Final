@@ -2,15 +2,16 @@
 
 namespace Tests\Application\CoinLoreServiceTest;
 use App\Application\API\GetBalanceWalletService;
+use App\Domain\Wallet;
 use Tests\TestCase;
 use Exception;
-use App\Infrastructure\Cache\WalletCache;
+use App\Application\CacheSource\CacheSource;
 use Mockery;
 
-class GetBalanceWalletTest extends TestCase
+class GetBalanceWalletServiceTest extends TestCase
 {
     private GetBalanceWalletService $getBalanceWalletService;
-    private WalletCache $walletCache;
+    private CacheSource $walletCache;
 
     /**
      * @setUp
@@ -19,7 +20,7 @@ class GetBalanceWalletTest extends TestCase
     {
         parent::setUp();
 
-        $this->walletCache = Mockery::mock(WalletCache::class);
+        $this->walletCache = Mockery::mock(CacheSource::class);
 
         $this->getBalanceWalletService = new GetBalanceWalletService($this->walletCache);
     }
@@ -30,12 +31,28 @@ class GetBalanceWalletTest extends TestCase
     public function walletNotFound()
     {
         $this->walletCache
-            ->expects('getBalance')
+            ->expects('get')
             ->with('1')
             ->once()
             ->andThrow(new Exception('a wallet with the specified ID was not found.'));
 
-        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('a wallet with the specified ID was not found.');
+
+        $this->getBalanceWalletService->execute('1');
+    }
+
+    /**
+     * @test
+     */
+    public function genericError()
+    {
+        $this->walletCache
+            ->expects('get')
+            ->with('1')
+            ->once()
+            ->andThrow(new Exception('Service unavailable'));
+
+        $this->expectExceptionMessage('Service unavailable');
 
         $this->getBalanceWalletService->execute('1');
     }
@@ -45,11 +62,15 @@ class GetBalanceWalletTest extends TestCase
      */
     public function getBalanceWallet()
     {
+        $wallet = new Wallet("1");
+        $wallet->setProfit(2);
+        $wallet->setExpenses(1);
+
         $this->walletCache
-            ->expects('getBalance')
+            ->expects('get')
             ->with('1')
             ->once()
-            ->andReturn(1);
+            ->andReturn($wallet);
 
         $response = $this->getBalanceWalletService->execute('1');
 

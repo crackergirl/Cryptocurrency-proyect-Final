@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Infrastructure\Controllers;
 use App\Application\API\OpenWalletService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
 
 class OpenWalletController extends BaseController
 {
@@ -19,19 +17,18 @@ class OpenWalletController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(): JsonResponse
     {
         try {
-            $idWallet = $this->openWalletService->execute();
+            $walletId = $this->openWalletService->execute();
         }catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
-        return response()->json(['wallet_id' => $idWallet
+        return response()->json(['wallet_id' => $walletId
         ], Response::HTTP_OK);
     }
 }

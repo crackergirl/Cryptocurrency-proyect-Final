@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Providers;
 
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;;
-use App\Infrastructure\CoinLoreCryptoDataManager;
+use App\Application\DataSource\CryptoDataSource;
+use App\Infrastructure\CryptoDataManager;
+use App\Application\CacheSource\CacheSource;
+use App\Infrastructure\Cache\WalletCache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,8 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(CoinLoreCryptoDataSource::class, function () {
-            return new CoinLoreCryptoDataManager();
+        $this->app->bind(CryptoDataSource::class, function () {
+            return new CryptoDataManager();
+        });
+
+        $this->app->bind(CacheSource::class, function () {
+            return new WalletCache();
         });
 
     }

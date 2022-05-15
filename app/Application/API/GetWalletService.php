@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Application\API;
+use App\Domain\Wallet;
 use App\Application\CacheSource\CacheSource;
 use Exception;
 
-class GetBalanceWalletService
+class GetWalletService
 {
     private CacheSource $walletCache;
 
@@ -16,13 +17,13 @@ class GetBalanceWalletService
     /***
      * @throws Exception
      */
-    public function execute(string $walletId): float
+    public function execute(string $walletId): Wallet
     {
         try {
             $wallet = $this->walletCache->get($walletId);
-            return $wallet->getProfit() - $wallet->getExpenses();
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
+        return $wallet;
     }
 }

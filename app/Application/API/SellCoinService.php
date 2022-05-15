@@ -1,36 +1,30 @@
 <?php
 
 namespace App\Application\API;
-
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
 use App\Domain\Wallet;
-use App\Infrastructure\Cache\WalletCache;
+use App\Application\CacheSource\CacheSource;
 use Exception;
 use Illuminate\Http\Response;
 
-
 class SellCoinService
 {
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
-    private WalletCache $walletCache;
+    private CacheSource $walletCache;
 
-    public function __construct(CoinLoreCryptoDataSource $coinLoreCryptoDataSource)
+    public function __construct(CacheSource $walletCache)
     {
-        $this->coinLoreCryptoDataSource = $coinLoreCryptoDataSource;
-        $this->walletCache = new WalletCache();
+        $this->walletCache = $walletCache;
+
     }
 
     /***
      * @throws Exception
      */
-    public function execute(string $coin_id,string $wallet_id,float $amount_usd): string
+    public function execute(string $coinId,string $walletId,float $amountUsd, Coin $coin): string
     {
         try {
-            $actual_coin = $this->coinLoreCryptoDataSource->getCoin($coin_id);
-            $wallet = $this->exceptionWallet($coin_id,$wallet_id,$amount_usd);
-            $this->sellCoin($coin_id, $actual_coin,$wallet_id,$wallet,$amount_usd);
-
+            $wallet = $this->exceptionWallet($coinId,$walletId,$amountUsd);
+            $this->sellCoin($coinId, $coin,$walletId,$wallet,$amountUsd);
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
@@ -40,33 +34,26 @@ class SellCoinService
     /***
      * @throws Exception
      */
-    private function exceptionWallet(string $coin_id,string $wallet_id,float $amount_usd): Wallet{
-
-        $wallet = $this->walletCache->get($wallet_id);
-
-        if (!$wallet->existCoin($coin_id)){
+    private function exceptionWallet(string $coinId,string $walletId,float $amountUsd): Wallet
+    {
+        $wallet = $this->walletCache->get($walletId);
+        if (!$wallet->existCoin($coinId)){
             throw new Exception('A coin with specified ID was not found.',Response::HTTP_NOT_FOUND);
         }
-        $amount_coin_wallet = $wallet->getAmountCoinByID($coin_id);
-
-        if ($amount_coin_wallet < $amount_usd){
-            throw new Exception('the quantity has been exceeded, you have '.$amount_coin_wallet.'.',Response::HTTP_NOT_FOUND);
+        $amountCoinWallet = $wallet->getAmountCoinByID($coinId);
+        if ($amountCoinWallet < $amountUsd){
+            throw new Exception('the quantity has been exceeded, you have '.$amountCoinWallet.'.',Response::HTTP_NOT_FOUND);
         }
         return $wallet;
     }
 
-    private function sellCoin(string $coin_id,Coin $actual_coin,string $wallet_id,Wallet $wallet,float $amount_usd): void{
-
-        $actual_price_coin = $actual_coin->getPriceUsd();
-        $wallet->setProfit($wallet->getProfit() + floatval($actual_price_coin)*$amount_usd);
-
-        $coin = $wallet->getCoinByID($coin_id);
-        $amount_coin_wallet = $wallet->getAmountCoinByID($coin_id);
-        $wallet->setCoins($coin,$amount_coin_wallet - $amount_usd);
-
-        $this->walletCache->set($wallet_id,$wallet);
-
+    private function sellCoin(string $coinId,Coin $actualCoin,string $walletId,Wallet $wallet,float $amountUsd): void
+    {
+        $actualPriceCoin = $actualCoin->getPriceUsd();
+        $wallet->setProfit($wallet->getProfit() + floatval($actualPriceCoin)*$amountUsd);
+        $coin = $wallet->getCoinByID($coinId);
+        $amountCoinWallet = $wallet->getAmountCoinByID($coinId);
+        $wallet->setCoins($coin,$amountCoinWallet - $amountUsd);
+        $this->walletCache->set($walletId,$wallet);
     }
-
-
 }

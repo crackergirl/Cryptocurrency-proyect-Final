@@ -1,17 +1,17 @@
 <?php
 
 namespace Tests\Application\CoinLoreServiceTest;
-use App\Application\CoinLoreCryptoDataSource\CoinLoreCryptoDataSource;
 use App\Domain\Coin;
+use App\Infrastructure\APIClient;
 use Tests\TestCase;
 use Exception;
 use Mockery;
 use App\Application\API\GetCoinService;
 
-class ServiceGetCoinTest extends TestCase
+class GetCoinServiceTest extends TestCase
 {
     private GetCoinService $getCoinService;
-    private CoinLoreCryptoDataSource $coinLoreCryptoDataSource;
+    private APIClient $apiClient;
 
     /**
     * @setUp
@@ -20,9 +20,8 @@ class ServiceGetCoinTest extends TestCase
     {
         parent::setUp();
 
-        $this->coinLoreCryptoDataSource = Mockery::mock(CoinLoreCryptoDataSource::class);
-
-        $this->getCoinService = new GetCoinService($this->coinLoreCryptoDataSource);
+        $this->apiClient = Mockery::mock(APIClient::class);
+        $this->getCoinService = new GetCoinService($this->apiClient);
     }
 
     /**
@@ -30,13 +29,13 @@ class ServiceGetCoinTest extends TestCase
     */
     public function coinNotFound()
     {
-        $this->coinLoreCryptoDataSource
+        $this->apiClient
             ->expects('getCoin')
             ->with(-1)
             ->once()
             ->andThrow(new Exception('A coin with the specified ID was not found'));
 
-        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('A coin with the specified ID was not found');
 
         $this->getCoinService->execute(-1);
     }
@@ -48,7 +47,7 @@ class ServiceGetCoinTest extends TestCase
     {
         $coin = new Coin('1','1','1','1','1',1);
 
-        $this->coinLoreCryptoDataSource
+        $this->apiClient
             ->expects('getCoin')
             ->with(300)
             ->once()
@@ -59,4 +58,19 @@ class ServiceGetCoinTest extends TestCase
         $this->assertEquals($coin,$response);
     }
 
+    /**
+     * @test
+     */
+    public function genericError()
+    {
+        $this->apiClient
+            ->expects('getCoin')
+            ->with(20)
+            ->once()
+            ->andThrow(new Exception('Service unavailable'));
+
+        $this->expectExceptionMessage('Service unavailable');
+
+        $this->getCoinService->execute(20);
+    }
 }
