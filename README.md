@@ -1,3 +1,36 @@
+Keywords: TDD, Laravel, Laravel cache, CoinLore API
+
+Tasks that we have done:
+
+- We have created an interface  for the cache implementation. This interface is located
+  in Application/CacheSource folder. Moreover , the class that used this interface is located 
+  in Infrastructure/Cache. Also we have considered that a test could be great in order to prove 
+  a correct behaviour of the class. The test is in tests/app/infrastructure/Cache.
+
+- We have also created an interface to call the CoinLore API. The interface is located in 
+  Application/Datasource. The class that use this interface is in the following path: 
+  app/Infrastructure (CryptoDataManager.php). A little comment about this feauture is that we have created a new 
+  class called APIclient in order to test the class that is mentioned above (tests/app/APIClient)
+  
+A little comment about service classes (located in Application/API):
+- Only GetCoinService used the class APIClient.
+- The rest of the services used the cache interface. 
+
+- In order to validate certain parameters that are used in the Controller classes, we have created
+  a separate Validator class. This class is located in Application/Validator. The test from this class
+  in the path tests/app/Infrastructure/Validator.
+  
+Some comments about controller classes:
+- Service classes called Cache or CoinLore implementation.
+- There are two classes (sell and buy), that used two different services. In this case, GetCoin service
+  and another one based on the tasks that the controller should do.
+
+-Another key detail is that each domain class have its own method that is capable to transform an 
+ entire object into an array representation.
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

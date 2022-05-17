@@ -31,24 +31,6 @@ class BuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function genericError()
-    {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-
-        $this->coinLoreCryptoDataManager
-            ->expects('getCoin')
-            ->with('90')
-            ->once()
-            ->andThrow(new Exception('Service unavailable',503));
-
-        $response = $this->post('api/coin/buy',$data);
-
-        $response->assertExactJson(['error' => 'Service unavailable']);
-    }
-
-    /**
-     * @test
-     */
     public function buyCoinSuccessful()
     {
         $wallet = new Wallet('1');

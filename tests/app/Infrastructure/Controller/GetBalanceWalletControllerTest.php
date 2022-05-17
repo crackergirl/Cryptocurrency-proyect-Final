@@ -27,22 +27,6 @@ class GetBalanceWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function genericError()
-    {
-        $this->walletCache
-            ->expects('get')
-            ->with('1')
-            ->once()
-            ->andThrow(new Exception('Service unavailable',503));
-
-        $response = $this->get('api/wallet/1/balance');
-
-        $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
-    }
-
-    /**
-     * @test
-     */
     public function walletNotFound()
     {
         $this->walletCache
