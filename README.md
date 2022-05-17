@@ -1,3 +1,5 @@
+Keywords: TDD, Laravel, Laravel cache, CoinLore API
+
 Tasks that we have done:
 
 - We have created an interface  for the cache implementation. This interface is located

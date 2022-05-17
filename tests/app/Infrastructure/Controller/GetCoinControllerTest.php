@@ -26,22 +26,6 @@ class GetCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function genericError()
-    {
-        $this->coinLoreCryptoDataManager
-            ->expects('getCoin')
-            ->with('90')
-            ->once()
-            ->andThrow(new Exception('Service unavailable',503));
-
-        $response = $this->get('/api/coin/status/90');
-
-        $response->assertStatus(Response::HTTP_SERVICE_UNAVAILABLE)->assertExactJson(['error' => 'Service unavailable']);
-    }
-
-    /**
-     * @test
-     */
     public function coinExists()
     {
         $this->coinLoreCryptoDataManager
