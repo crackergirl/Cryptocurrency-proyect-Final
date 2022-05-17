@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\App\Infrastructure\Controller;
+
 use App\Application\CacheSource\CacheSource;
 use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Wallet;
@@ -23,7 +24,6 @@ class BuyCoinControllerTest extends TestCase
 
         $this->walletCache = Mockery::mock(CacheSource::class);
         $this->coinLoreCryptoDataManager = Mockery::mock(CryptoDataSource::class);
-
         $this->app->bind(CacheSource::class, fn () => $this->walletCache);
         $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataManager);
     }
@@ -34,6 +34,7 @@ class BuyCoinControllerTest extends TestCase
     public function genericError()
     {
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
+
         $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')
@@ -48,27 +49,11 @@ class BuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function coinNotExists()
-    {
-        $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
-        $this->coinLoreCryptoDataManager
-            ->expects('getCoin')
-            ->with('90')
-            ->once()
-            ->andThrow(new Exception('A coin with specified ID was not found.',404));
-
-        $response = $this->post('api/coin/buy',$data);
-
-        $response->assertStatus(Response::HTTP_NOT_FOUND)->assertExactJson(['error' => 'A coin with specified ID was not found.']);
-    }
-
-    /**
-     * @test
-     */
     public function buyCoinSuccessful()
     {
         $wallet = new Wallet('1');
         $data = ['coin_id' => '90','wallet_id'=>'1', 'amount_usd'=> 3];
+
         $this->coinLoreCryptoDataManager
             ->expects('getCoin')
             ->with('90')

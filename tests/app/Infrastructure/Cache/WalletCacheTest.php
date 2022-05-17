@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\app\Infrastructure\Cache;
+namespace Tests\App\Infrastructure\Cache;
 
 use App\Domain\Wallet;
 use App\Infrastructure\Cache\WalletCache;
+use Exception;
 use Tests\TestCase;
 
 class WalletCacheTest extends TestCase
@@ -36,6 +37,7 @@ class WalletCacheTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function getWallet()
     {
@@ -50,12 +52,13 @@ class WalletCacheTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function notFoundIDWallet()
     {
         $this->expectExceptionMessage('A wallet with specified ID was not found.');
 
-        $this->walletCache->get("1");
+        $this->walletCache->get("97");
     }
 
 }

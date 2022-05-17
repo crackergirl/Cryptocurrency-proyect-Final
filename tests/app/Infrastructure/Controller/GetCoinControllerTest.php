@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\App\Infrastructure\Controller;
+
 use App\Application\DataSource\CryptoDataSource;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Exception;
-use App\Domain\Coin;
 use Mockery;
 
 class GetCoinControllerTest extends TestCase
@@ -20,7 +20,6 @@ class GetCoinControllerTest extends TestCase
         parent::setUp();
 
         $this->coinLoreCryptoDataManager = Mockery::mock(CryptoDataSource::class);
-
         $this->app->bind(CryptoDataSource::class, fn () => $this->coinLoreCryptoDataManager);
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Application\API;
+
 use App\Domain\Coin;
 use App\Infrastructure\APIClient;
 use Exception;
@@ -24,6 +25,7 @@ class GetCoinService
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
+
         return $coin;
     }
 }

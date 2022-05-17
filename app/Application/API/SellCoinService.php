@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Application\API;
+
 use App\Domain\Coin;
 use App\Domain\Wallet;
 use App\Application\CacheSource\CacheSource;
@@ -28,6 +29,7 @@ class SellCoinService
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
+
         return "successful operation";
     }
 
@@ -44,6 +46,7 @@ class SellCoinService
         if ($amountCoinWallet < $amountUsd){
             throw new Exception('the quantity has been exceeded, you have '.$amountCoinWallet.'.',Response::HTTP_NOT_FOUND);
         }
+
         return $wallet;
     }
 

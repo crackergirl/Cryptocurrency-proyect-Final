@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure\Cache;
+
 use App\Domain\Wallet;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;

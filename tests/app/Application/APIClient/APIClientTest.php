@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Application\CoinLoreServiceTest;
+namespace Tests\App\Application\CoinLoreServiceTest;
+
 use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use App\Infrastructure\APIClient;
@@ -43,10 +44,12 @@ class APIClientTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function coinFound()
     {
         $coin = new Coin('1','1','1','1','1',1);
+
         $this->cryptoDataManager
             ->expects('getCoin')
             ->with('1')
