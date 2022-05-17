@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Application\CoinLoreServiceTest;
+namespace Tests\App\Application\CoinLoreServiceTest;
+
 use App\Application\CacheSource\CacheSource;
 use Tests\TestCase;
 use Mockery;
@@ -20,7 +21,6 @@ class OpenWalletServiceTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-
         $this->openWalletService = new OpenWalletService($this->walletCache);
     }
 
@@ -81,6 +81,7 @@ class OpenWalletServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function genericError()
     {

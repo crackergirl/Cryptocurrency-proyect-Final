@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
+
 use App\Application\API\BuyCoinService;
 use App\Application\API\GetCoinService;
 use Exception;
@@ -40,6 +41,7 @@ class BuyCoinController extends BaseController
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
+
         return response()->json([$requestStatus
         ], Response::HTTP_OK);
     }

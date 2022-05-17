@@ -1,6 +1,8 @@
 <?php
 
-namespace Tests\app\Application\Validator;
+namespace Tests\App\Application\Validator;
+
+use Exception;
 use Tests\TestCase;
 use App\Infrastructure\Validator\ParametersValidator;
 use Illuminate\Http\Request;
@@ -24,6 +26,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorCoinIdValidatorNotFound()
     {
@@ -36,6 +39,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorWalletIdValidatorNotFound()
     {
@@ -48,6 +52,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorAmountValidatorNotFound()
     {
@@ -60,6 +65,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorAmountValidatorNotNumber()
     {
@@ -72,6 +78,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorWalletIdValidatorNotNumber()
     {
@@ -84,6 +91,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorCoinIdValidatorNotNumber()
     {
@@ -96,6 +104,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function errorAmountValidatorInvalidNumber()
     {
@@ -108,6 +117,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function coinParameterValidatorOk()
     {
@@ -120,6 +130,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function idValidatorOk()
     {
@@ -132,6 +143,7 @@ class ParametersValidatorTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function idValidatorError()
     {

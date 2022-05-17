@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\App\Infrastructure\Controller;
+
 use App\Domain\Wallet;
 use App\Application\CacheSource\CacheSource;
 use Illuminate\Http\Response;
@@ -21,7 +22,6 @@ class GetWalletControllerTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-
         $this->app->bind(CacheSource::class, fn () => $this->walletCache);
     }
 
@@ -67,6 +67,7 @@ class GetWalletControllerTest extends TestCase
         $wallet = new Wallet('1');
         $wallet->setCoins($coin1,7);
         $wallet->setCoins($coin2,3);
+
         $this->walletCache
             ->expects('get')
             ->once()

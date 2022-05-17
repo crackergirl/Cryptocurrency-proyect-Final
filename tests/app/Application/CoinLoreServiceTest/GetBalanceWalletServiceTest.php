@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Application\CoinLoreServiceTest;
+namespace Tests\App\Application\CoinLoreServiceTest;
+
 use App\Application\API\GetBalanceWalletService;
 use App\Domain\Wallet;
 use Tests\TestCase;
@@ -21,12 +22,12 @@ class GetBalanceWalletServiceTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-
         $this->getBalanceWalletService = new GetBalanceWalletService($this->walletCache);
     }
 
     /**
      * @test
+     * @throws Exception
      */
     public function walletNotFound()
     {
@@ -43,6 +44,7 @@ class GetBalanceWalletServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function genericError()
     {
@@ -59,6 +61,7 @@ class GetBalanceWalletServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function getBalanceWallet()
     {

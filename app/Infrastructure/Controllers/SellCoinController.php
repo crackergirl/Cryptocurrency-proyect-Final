@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
+
 use App\Application\API\GetCoinService;
 use App\Application\API\SellCoinService;
 use App\Infrastructure\Validator\ParametersValidator;
@@ -39,6 +40,7 @@ class SellCoinController
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
+
         return response()->json([$requestStatus
         ], Response::HTTP_OK);
     }

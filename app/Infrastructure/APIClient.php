@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure;
+
 use App\Application\DataSource\CryptoDataSource;
 use App\Domain\Coin;
 use Illuminate\Http\Response;
@@ -28,6 +29,7 @@ class APIClient
         }catch (Exception $exception){
             throw new Exception($exception->getMessage(),$exception->getCode());
         }
+
         return new Coin($coin[0]->id, $coin[0]->name, $coin[0]->symbol, $coin[0]->nameid, $coin[0]->price_usd,$coin[0]->rank);
     }
 }

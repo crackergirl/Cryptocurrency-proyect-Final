@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
+
 use App\Application\API\GetBalanceWalletService;
 use App\Infrastructure\Validator\ParametersValidator;
 use Exception;
@@ -34,6 +35,7 @@ class GetBalanceWalletController extends BaseController
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
+
         return response()->json(["balance_usd" => $balance
         ], Response::HTTP_OK);
     }

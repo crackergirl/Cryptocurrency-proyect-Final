@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Infrastructure\Controllers;
+
 use App\Application\API\OpenWalletService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -28,6 +29,7 @@ class OpenWalletController extends BaseController
                 'error' => $exception->getMessage()
             ], $exception->getCode());
         }
+
         return response()->json(['wallet_id' => $walletId
         ], Response::HTTP_OK);
     }

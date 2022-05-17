@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Application\CoinLoreServiceTest;
+namespace Tests\App\Application\CoinLoreServiceTest;
+
 use App\Domain\Coin;
 use App\Infrastructure\APIClient;
 use Tests\TestCase;
@@ -25,8 +26,9 @@ class GetCoinServiceTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     * @throws Exception
+     */
     public function coinNotFound()
     {
         $this->apiClient
@@ -42,6 +44,7 @@ class GetCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function coinFound()
     {
@@ -60,6 +63,7 @@ class GetCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function genericError()
     {

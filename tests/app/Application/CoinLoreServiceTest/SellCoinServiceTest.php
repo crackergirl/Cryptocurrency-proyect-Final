@@ -1,6 +1,7 @@
 <?php
 
-namespace Tests\Application\CoinLoreServiceTest;
+namespace Tests\App\Application\CoinLoreServiceTest;
+
 use App\Application\API\SellCoinService;
 use App\Application\CacheSource\CacheSource;
 use App\Domain\Coin;
@@ -22,16 +23,17 @@ class SellCoinServiceTest extends TestCase
         parent::setUp();
 
         $this->walletCache = Mockery::mock(CacheSource::class);
-
         $this->sellCoinService = new SellCoinService($this->walletCache);
     }
 
     /**
      * @test
+     * @throws Exception
      */
     public function genericError()
     {
         $coin = new Coin('1','1','1','1','1',1);
+
         $this->walletCache
             ->expects('get')
             ->with('1')
@@ -45,10 +47,12 @@ class SellCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function walletNotFound()
     {
         $coin = new Coin('1','1','1','1','1',1);
+
         $this->walletCache
             ->expects('get')
             ->with('1')
@@ -62,11 +66,13 @@ class SellCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function coinNotFound()
     {
         $coin = new Coin('1','1','1','1','1',1);
         $wallet = new Wallet('1');
+
         $this->walletCache
             ->expects('get')
             ->with('1')
@@ -80,12 +86,14 @@ class SellCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function notEnoughCoins()
     {
         $coin = new Coin('1','1','1','1','1',1);
         $wallet = new Wallet('1');
         $wallet->setCoins($coin,3);
+
         $this->walletCache
             ->expects('get')
             ->with('1')
@@ -99,12 +107,14 @@ class SellCoinServiceTest extends TestCase
 
     /**
      * @test
+     * @throws Exception
      */
     public function sellCoinSuccessful()
     {
         $coin = new Coin('1','1','1','1','1',1);
         $wallet = new Wallet('1');
         $wallet->setCoins($coin,3);
+
         $this->walletCache
             ->expects('get')
             ->with('1')

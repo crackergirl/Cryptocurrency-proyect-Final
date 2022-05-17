@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Application\API;
+
 use App\Application\CacheSource\CacheSource;
 use App\Domain\Coin;
 use Exception;
@@ -25,6 +26,7 @@ class BuyCoinService
         }catch (Exception $exception){
              throw new Exception($exception->getMessage(),$exception->getCode());
         }
+
         return "successful operation";
     }
 

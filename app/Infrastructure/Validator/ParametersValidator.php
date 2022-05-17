@@ -24,6 +24,7 @@ class ParametersValidator
         elseif (floatval($request->get('amount_usd')<=0)){
             throw new Exception('amount_usd must be over 0',Response::HTTP_BAD_REQUEST);
         }
+
         return true;
     }
 
@@ -35,6 +36,7 @@ class ParametersValidator
         if(!(is_numeric($objectId))){
             throw new Exception('Invalid parameter format',Response::HTTP_BAD_REQUEST);
         }
+
         return true;
     }
 }
