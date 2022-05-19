@@ -1,6 +1,14 @@
 Keywords: TDD, Laravel, Laravel cache, CoinLore API
 
+
+How did we have worked:
+
+- At first we have made two endpoints each one. We made one brach for one endpoint. 
+- However, we realized that we have mixed the main purpose from each service class (a service was capable of used the cache and the CoinLore implementation). After that, we have done all together in order to obtain a better result. In this approach, we have made also branches to make a code refactor.
+
 Tasks that we have done:
+
+- For each endpoint we have created a controller and a service class. 
 
 - We have created an interface  for the cache implementation. This interface is located
   in Application/CacheSource folder. Moreover , the class that used this interface is located 
@@ -28,6 +36,16 @@ Some comments about controller classes:
 -Another key detail is that each domain class have its own method that is capable to transform an 
  entire object into an array representation.
 
+Anything you should consider
+
+-We have made our own exceptions in some cases. For example:
+ ** When we want to buy or sell a coin, a exception is thrown if the amount is below 0 ("amount_usd must be over 0").
+ ** When we want to sell more coins that we have. ("the quantity has been exceeded, you have x").
+ 
+
+How far have you come? 
+
+- We have made all the endpoints.
 
 
 
